@@ -18,7 +18,7 @@ import {IonicStorageModule} from "@ionic/storage";
     HomePage,
     ListPage,
     LoginPage,
-	ComptePage
+	  ComptePage
   ],
   imports: [
     BrowserModule,
