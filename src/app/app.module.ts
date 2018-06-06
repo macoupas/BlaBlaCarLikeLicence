@@ -9,6 +9,8 @@ import { LoginPage } from '../pages/login/login';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {ComptePage} from "../pages/compte/compte";
+import { StorageProvider } from '../providers/storage/storage';
+import {IonicStorageModule} from "@ionic/storage";
 
 @NgModule({
   declarations: [
@@ -21,6 +23,10 @@ import {ComptePage} from "../pages/compte/compte";
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot({
+      name: 'blablacarDb',
+      driverOrder: ['indexeddb', 'sqlite', 'websql']
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -33,7 +39,8 @@ import {ComptePage} from "../pages/compte/compte";
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    StorageProvider
   ]
 })
 export class AppModule {}

@@ -25,13 +25,13 @@
       <ion-col col-12 col-sm-5>
         <ion-row align-items-center>
           <label col-12 col-sm-auto class="pad10R"> Nom : </label>
-          <ion-input col-12 col-sm-auto></ion-input>
+          <ion-input col-12 col-sm-auto [(ngModel)]="nom" type="text" [value]="nom"></ion-input>
         </ion-row>
       </ion-col>
       <ion-col col-12 col-sm-5>
         <ion-row align-items-center>
           <label col-12 col-sm-auto class="pad10R"> Prénom : </label>
-          <ion-input col-12 col-sm-auto></ion-input>
+          <ion-input col-12 col-sm-auto type="text" [value]="prenom" [(ngModel)]="prenom"></ion-input>
         </ion-row>
       </ion-col>
     </ion-row>
@@ -39,13 +39,13 @@
       <ion-col col-12 col-sm-5 >
         <ion-row align-items-center>
           <label col-12 col-sm-auto class="pad10R"> Mail : </label>
-          <ion-input col-12 col-sm-auto></ion-input>
+          <ion-input col-12 col-sm-auto type="text" [value]="mail" [(ngModel)]="mail"></ion-input>
         </ion-row>
       </ion-col>
       <ion-col col-12 col-sm-5>
         <ion-row align-items-center>
           <label col-12 col-sm-auto class="pad10R"> Téléphone : </label>
-          <ion-input col-12 col-sm-auto></ion-input>
+          <ion-input col-12 col-sm-auto type="text" [value]="telephone" [(ngModel)]="telephone"></ion-input>
         </ion-row>
       </ion-col>
     </ion-row>
@@ -53,7 +53,7 @@
       <ion-col col-12 col-sm-5 >
         <ion-row align-items-center>
           <label col-12 col-sm-auto class="pad10R"> Age : </label>
-          <ion-input col-12 col-sm-auto></ion-input>
+          <ion-input col-12 col-sm-auto type="text" [value]="age" [(ngModel)]="age"></ion-input>
         </ion-row>
       </ion-col>
       <ion-col col-12 col-sm-5>
@@ -64,7 +64,7 @@
       </ion-col>
     </ion-row>
     <ion-row justify-content-center>
-          <button ion-button>Modifier</button>
+          <button ion-button (click)="setParamsCompte()">Modifier</button>
     </ion-row>
   </ion-grid>
 
