@@ -20,5 +20,10 @@ export class LoginPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
   }
+  
+  logIn(login,password){
+    if(login ="test" && password="test"){
+        
+    }
 
 }
