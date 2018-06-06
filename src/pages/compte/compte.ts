@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { StorageProvider } from "../../providers/storage/storage";
+import {UtilisateurModel} from "../../models/utilisateur.model";
 
 /**
  * Generated class for the ComptePage page.
@@ -16,30 +17,25 @@ import { StorageProvider } from "../../providers/storage/storage";
 })
 export class ComptePage {
 
-  nom: String;
-  prenom: String;
-  mail: String;
-  telephone: String;
-  age: String;
+  utilisateur: UtilisateurModel;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage:StorageProvider) {
-
+    this.utilisateur = new UtilisateurModel(
+      "",
+      "",
+      "",
+      "",
+      0,
+      [],
+      storage)
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ComptePage');
-    this.storage.getValue('nom').then(nom => this.nom = nom);
-    this.storage.getValue('prenom').then(prenom => this.prenom = prenom);
-    this.storage.getValue('mail').then(mail => this.mail = mail);
-    this.storage.getValue('telephone').then(telephone => this.telephone = telephone);
-    this.storage.getValue('age').then(age => this.age = age);
+    this.utilisateur.get();
   }
 
   setParamsCompte() {
-    this.storage.setValue('nom', this.nom);
-    this.storage.setValue('prenom', this.prenom);
-    this.storage.setValue('mail', this.mail);
-    this.storage.setValue('telephone', this.telephone);
-    this.storage.setValue('age', this.age);
+    this.utilisateur.save();
   }
 }
