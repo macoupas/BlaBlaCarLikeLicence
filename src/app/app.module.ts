@@ -11,6 +11,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import {ComptePage} from "../pages/compte/compte";
 import { StorageProvider } from '../providers/storage/storage';
 import {IonicStorageModule} from "@ionic/storage";
+import {CreationComptePage} from "../pages/creation-compte/creation-compte";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {IonicStorageModule} from "@ionic/storage";
     HomePage,
     ListPage,
     LoginPage,
-	  ComptePage
+	  ComptePage,
+    CreationComptePage
   ],
   imports: [
     BrowserModule,
@@ -34,7 +36,8 @@ import {IonicStorageModule} from "@ionic/storage";
     HomePage,
     ListPage,
     LoginPage,
-	ComptePage
+	  ComptePage,
+    CreationComptePage
   ],
   providers: [
     StatusBar,

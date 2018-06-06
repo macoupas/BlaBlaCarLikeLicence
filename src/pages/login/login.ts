@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { HomePage } from '../home/home';
+import {Component} from '@angular/core';
+import {NavController, NavParams} from 'ionic-angular';
+import {HomePage} from '../home/home';
+import {CreationComptePage} from "../creation-compte/creation-compte";
 
 /**
  * Generated class for the LoginPage page.
@@ -16,16 +17,19 @@ import { HomePage } from '../home/home';
 export class LoginPage {
 
 
-    
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.navCtrl = navCtrl
-}
+
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
   }
-  
-  logIn(){
-    this.navCtrl.setRoot(HomePage)
-}
+
+  logIn() {
+    this.navCtrl.setRoot(HomePage);
+  }
+
+  inscription() {
+    this.navCtrl.push(CreationComptePage);
+  }
 }

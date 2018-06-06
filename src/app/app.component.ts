@@ -25,7 +25,7 @@ export class MyApp {
     this.pages = [
       { title: 'Home', component: HomePage },
       { title: 'List', component: ListPage },
-	  { title: 'Mon compte', component: ComptePage },
+	    { title: 'Mon compte', component: ComptePage },
       { title: 'Déconnexion', component: LoginPage }
     ];
 
@@ -45,5 +45,5 @@ export class MyApp {
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
   }
-  
+
 }

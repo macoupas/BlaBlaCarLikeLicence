@@ -27,7 +27,9 @@ export class ComptePage {
       "",
       0,
       [],
-      storage)
+      "",
+      this.storage,
+    )
   }
 
   ionViewDidLoad() {
