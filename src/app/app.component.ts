@@ -8,6 +8,7 @@ import { ListPage } from '../pages/list/list';
 import {ProfilePage} from "../pages/profile/profile";
 import { LoginPage } from '../pages/login/login';
 import {AuthProvider} from "../providers/auth/auth";
+import {ProfilPage } from '../pages/profil/profil';
 
 @Component({
   templateUrl: 'app.html'
@@ -26,7 +27,8 @@ export class MyApp {
     this.pages = [
       { title: 'Home', component: HomePage },
       { title: 'List', component: ListPage },
-	    { title: 'Mon profile', component: ProfilePage }
+	  { title: 'Mon profile', component: ProfilePage }
+	  { title: 'Mon profil publique', component: ProfilPage }
     ];
 
   }
