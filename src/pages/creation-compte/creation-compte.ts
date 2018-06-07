@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 /**
  * Generated class for the CreationComptePage page.
@@ -15,11 +16,24 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class CreationComptePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private inscriptionForm: FormGroup;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder:FormBuilder) {
+    this.inscriptionForm = this.formBuilder.group({
+      nom: [''],
+      prenom: [''],
+      age: [0, Validators.min(0)],
+      mail: [''],
+      mdp: [''],
+      mdpConfirm: ['']
+    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CreationComptePage');
   }
 
+  inscription() {
+    console.log('inscription');
+  }
 }

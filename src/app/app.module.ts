@@ -12,6 +12,20 @@ import {ComptePage} from "../pages/compte/compte";
 import { StorageProvider } from '../providers/storage/storage';
 import {IonicStorageModule} from "@ionic/storage";
 import {CreationComptePage} from "../pages/creation-compte/creation-compte";
+import { FirestoreStorageProvider } from '../providers/firestore-storage/firestore-storage';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AuthProvider } from '../providers/auth/auth';
+
+export const firestoreConfig = {
+  apiKey: "AIzaSyAkfcjbz2_uhX3dPY_k6lXysc25PY-z8YE",
+  authDomain: "gestion-de-covoiturage.firebaseapp.com",
+  databaseURL: "https://gestion-de-covoiturage.firebaseio.com",
+  projectId: "gestion-de-covoiturage",
+  storageBucket: "gestion-de-covoiturage.appspot.com",
+  messagingSenderId: "692627907333"
+};
 
 @NgModule({
   declarations: [
@@ -28,7 +42,10 @@ import {CreationComptePage} from "../pages/creation-compte/creation-compte";
     IonicStorageModule.forRoot({
       name: 'blablacarDb',
       driverOrder: ['indexeddb', 'sqlite', 'websql']
-    })
+    }),
+    AngularFireModule.initializeApp(firestoreConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -43,7 +60,10 @@ import {CreationComptePage} from "../pages/creation-compte/creation-compte";
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    StorageProvider
+    StorageProvider,
+    FirestoreStorageProvider,
+    AngularFireDatabase,
+    AuthProvider
   ]
 })
 export class AppModule {}

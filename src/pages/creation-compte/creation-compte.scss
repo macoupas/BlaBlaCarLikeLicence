@@ -1,3 +1,31 @@
 page-creation-compte {
 
 }
+
+.mrg15B {
+  margin-bottom: 15px !important;
+}
+
+.box-input {
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+}
+
+.box-input > label {
+  font-size: 15px;
+  color: gray;
+}
+
+.box-input > ion-input {
+  border-bottom: 0;
+}
+
+ion-item {
+  border: 1px solid lightgrey !important;
+  border-radius: 5px !important;
+}
+
+ion-input > .text-input-md {
+  font-size: 18px;
+  margin: 0 0 0 10px !important;
+}

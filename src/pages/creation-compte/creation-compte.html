@@ -11,7 +11,41 @@
 
 </ion-header>
 
-<ion-content padding>
-  Création de compte
+<ion-content padding justify-content-center>
+  <form [formGroup]="inscriptionForm" novalidate  (ngSubmit)="inscription()">
+    <ion-grid col-12 col-sm-8 col-md-6 col-lg-4>
+      <ion-row class="mrg15B">
+        <label> Incription via e-mail </label>
+      </ion-row>
+      <ion-row col-12 class="box-input mrg15B">
+          <label col-12> Nom </label>
+          <ion-input col-12 type="text" formControlName="nom" required></ion-input>
+      </ion-row>
+      <ion-row col-12 class="box-input mrg15B">
+        <label col-12> Prénom </label>
+        <ion-input col-12 type="text" formControlName="prenom" required></ion-input>
+      </ion-row>
+      <ion-row col-12 class="box-input mrg15B">
+        <label col-12> Age </label>
+        <ion-input col-12 type="number" formControlName="age"></ion-input>
+      </ion-row>
+      <ion-row col-12 class="box-input mrg15B">
+        <label col-12> Email </label>
+        <ion-input col-12 type="mail" formControlName="mail" required></ion-input>
+      </ion-row>
+      <ion-row col-12 class="box-input mrg15B">
+        <label col-12> Mot de passe </label>
+        <ion-input col-12 type="password" formControlName="mdp" required></ion-input>
+      </ion-row>
+      <ion-row col-12 class="box-input mrg15B">
+        <label col-12> Confirmer le mot de passe </label>
+        <ion-input col-12 type="password" formControlName="mdpConfirm" required></ion-input>
+      </ion-row>
+      <ion-row col-12 class="mrg15B">
+        <button ion-button round col-12 type="submit">S'inscrire</button>
+      </ion-row>
+    </ion-grid>
+  </form>
+
 </ion-content>
 
