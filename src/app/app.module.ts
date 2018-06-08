@@ -12,9 +12,8 @@ import {ComptePage} from "../pages/compte/compte";
 import { StorageProvider } from '../providers/storage/storage';
 import {IonicStorageModule} from "@ionic/storage";
 import {CreationComptePage} from "../pages/creation-compte/creation-compte";
-import { FirestoreStorageProvider } from '../providers/firestore-storage/firestore-storage';
+import { AngularFirestoreModule} from "angularfire2/firestore";
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthProvider } from '../providers/auth/auth';
 
@@ -44,9 +43,9 @@ export const firestoreConfig = {
       driverOrder: ['indexeddb', 'sqlite', 'websql']
     }),
     AngularFireModule.initializeApp(firestoreConfig),
-    AngularFireDatabaseModule,
-    AngularFireAuthModule
-  ],
+    AngularFireAuthModule,
+    AngularFirestoreModule
+],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
@@ -61,8 +60,6 @@ export const firestoreConfig = {
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     StorageProvider,
-    FirestoreStorageProvider,
-    AngularFireDatabase,
     AuthProvider
   ]
 })

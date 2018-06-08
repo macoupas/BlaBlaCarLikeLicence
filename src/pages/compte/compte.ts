@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { StorageProvider } from "../../providers/storage/storage";
-import {UtilisateurModel} from "../../models/utilisateur.model";
 
 /**
  * Generated class for the ComptePage page.
@@ -17,27 +16,41 @@ import {UtilisateurModel} from "../../models/utilisateur.model";
 })
 export class ComptePage {
 
-  utilisateur: UtilisateurModel;
+  utilisateur: Utilisateur = {
+    uid: "",
+    nom: "",
+    prenom: "",
+    mail: "",
+    telephone: "",
+    age: "",
+    voitures: "",
+    commentaires: [],
+    trajets: []
+  };
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage:StorageProvider) {
-    this.utilisateur = new UtilisateurModel(
-      "",
-      "",
-      "",
-      "",
-      0,
-      [],
-      "",
-      this.storage,
-    )
+    this.storage.getValue('user').then(user => {
+      this.utilisateur.nom = user.nom;
+      this.utilisateur.prenom = user.prenom;
+      this.utilisateur.mail = user.mail;
+      this.utilisateur.telephone = user.telephone;
+      this.utilisateur.age = user.age;
+      this.utilisateur.voitures = user.voitures;
+    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ComptePage');
-    this.utilisateur.get();
   }
 
   setParamsCompte() {
-    this.utilisateur.save();
+    this.storage.setValue('user', {
+      nom: this.utilisateur.nom,
+      prenom: this.utilisateur.prenom,
+      mail: this.utilisateur.mail,
+      telephone: this.utilisateur.telephone,
+      age: this.utilisateur.age,
+      voitures: this.utilisateur.voitures
+    });
   }
 }

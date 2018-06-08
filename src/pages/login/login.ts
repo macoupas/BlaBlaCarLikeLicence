@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {HomePage} from '../home/home';
 import {CreationComptePage} from "../creation-compte/creation-compte";
+import {AuthProvider} from "../../providers/auth/auth";
 
 /**
  * Generated class for the LoginPage page.
@@ -17,7 +18,7 @@ import {CreationComptePage} from "../creation-compte/creation-compte";
 export class LoginPage {
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public auth:AuthProvider) {
 
   }
 
