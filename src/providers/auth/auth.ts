@@ -25,7 +25,12 @@ export class AuthProvider {
   private navCtrl: NavController;
 
   constructor(private afAuth: AngularFireAuth, private fs: FirestoreStorageProvider, private app:App) {
-    this.navCtrl = app.getActiveNav();
+    this.afAuth.authState.subscribe(user => {
+      this.navCtrl = app.getActiveNav();
+      if(user != null) {
+        this.navCtrl.setRoot(HomePage);
+      }
+    });
   }
 
   googleLogin() {
