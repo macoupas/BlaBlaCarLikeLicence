@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { StorageProvider } from "../../providers/storage/storage";
+import {AuthProvider} from "../../providers/auth/auth";
+import {Utilisateur} from "../../models/utilisateur.model";
 
 /**
  * Generated class for the ComptePage page.
@@ -16,11 +17,26 @@ import { StorageProvider } from "../../providers/storage/storage";
 })
 export class ComptePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:StorageProvider) {
+  private utilisateurConnectee: Utilisateur = {
+    uid: "",
+    username: "",
+    nom: "",
+    prenom: "",
+    mail: "",
+    telephone: "",
+    age: 0,
+    voitures: [],
+    commentaires: [],
+    trajets: []
+  };
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private auth:AuthProvider) {
+
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ComptePage');
+    this.utilisateurConnectee = this.auth.utilisateurConnectee;
+    console.debug('compteUser', this.utilisateurConnectee);
   }
 
   setParamsCompte() {

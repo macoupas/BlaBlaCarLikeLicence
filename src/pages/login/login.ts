@@ -18,7 +18,7 @@ import {AuthProvider} from "../../providers/auth/auth";
 export class LoginPage {
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public auth:AuthProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
 
   }
 
