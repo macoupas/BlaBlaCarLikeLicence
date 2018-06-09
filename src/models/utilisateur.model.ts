@@ -1,10 +1,11 @@
-interface Utilisateur {
+export interface Utilisateur {
   uid: String,
-  nom,
-  prenom,
-  mail,
-  telephone,
-  age,
+  username: String,
+  nom: String,
+  prenom: String,
+  mail: String,
+  telephone: String,
+  age: Number,
   voitures,
   commentaires,
   trajets

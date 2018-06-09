@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import {AngularFireAuth} from "angularfire2/auth";
-import {AngularFirestore, AngularFirestoreDocument} from "angularfire2/firestore";
-import { Observable } from 'rxjs';
-import {switchMap} from "rxjs/operators";
-import {of} from "rxjs/observable/of";
-import {auth, default as firebase, User} from "firebase";
+import {auth} from "firebase";
 import {App, NavController} from "ionic-angular";
 import {HomePage} from "../../pages/home/home";
 import {LoginPage} from "../../pages/login/login";
 import {FirestoreStorageProvider} from "../firestore-storage/firestore-storage";
 import {ComptePage} from "../../pages/compte/compte";
+import {Utilisateur} from "../../models/utilisateur.model";
 
 /*
   Generated class for the AuthProvider provider.
@@ -20,7 +17,7 @@ import {ComptePage} from "../../pages/compte/compte";
 @Injectable()
 export class AuthProvider {
 
-  utilisateur: firebase.User;
+  utilisateurConnectee: Utilisateur;
 
   private navCtrl: NavController;
 
@@ -28,7 +25,29 @@ export class AuthProvider {
     this.afAuth.authState.subscribe(user => {
       this.navCtrl = app.getActiveNav();
       if(user != null) {
-        this.navCtrl.setRoot(HomePage);
+        console.debug('user', user);
+        this.fs.getUtilisateur(user.uid).then((utilisateur) => {
+          if(utilisateur == null) {
+            this.utilisateurConnectee = {
+              uid: user.uid,
+              username: user.displayName,
+              nom: "",
+              prenom: "",
+              mail: user.email,
+              telephone: user.phoneNumber ? user.phoneNumber : "",
+              age: null,
+              voitures: [],
+              commentaires: [],
+              trajets: []
+            };
+            console.log('utilisateurConnectee', this.utilisateurConnectee);
+            this.navCtrl.setRoot(ComptePage);
+          } else {
+             Object.assign(this.utilisateurConnectee, utilisateur);
+             console.log('utilisateurConnectee', this.utilisateurConnectee);
+             this.navCtrl.setRoot(HomePage);
+          }
+        });
       }
     });
   }
