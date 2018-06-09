@@ -4,10 +4,12 @@ import {AngularFirestore, AngularFirestoreDocument} from "angularfire2/firestore
 import { Observable } from 'rxjs';
 import {switchMap} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
-import {auth} from "firebase";
+import {auth, default as firebase, User} from "firebase";
 import {App, NavController} from "ionic-angular";
 import {HomePage} from "../../pages/home/home";
 import {LoginPage} from "../../pages/login/login";
+import {FirestoreStorageProvider} from "../firestore-storage/firestore-storage";
+import {ComptePage} from "../../pages/compte/compte";
 
 /*
   Generated class for the AuthProvider provider.
@@ -18,21 +20,12 @@ import {LoginPage} from "../../pages/login/login";
 @Injectable()
 export class AuthProvider {
 
-  utilisateur: Observable<Utilisateur>;
+  utilisateur: firebase.User;
 
   private navCtrl: NavController;
 
-  constructor(private afAuth: AngularFireAuth, private db:AngularFirestore, private app:App) {
+  constructor(private afAuth: AngularFireAuth, private fs: FirestoreStorageProvider, private app:App) {
     this.navCtrl = app.getActiveNav();
-    this.utilisateur = this.afAuth.authState.pipe(
-      switchMap(user => {
-        if (user) {
-          return this.db.doc<Utilisateur>(`users/${user.uid}`).valueChanges()
-        } else {
-          return of(null)
-        }
-      })
-    )
   }
 
   googleLogin() {
@@ -43,32 +36,19 @@ export class AuthProvider {
   private oAuthLogin(provider) {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) => {
-        this.navCtrl.setRoot(HomePage);
-        console.log(credential);
-        this.updateUserData(credential.user)
+        this.fs.getUtilisateur(credential.user.uid).then((utilisateur) => {
+          console.log(utilisateur);
+          if(utilisateur == null) {
+            console.log('null');
+            this.navCtrl.setRoot(ComptePage);
+          } else {
+            console.log('non null');
+            this.navCtrl.setRoot(HomePage);
+          }
+        });
       }).catch((error) => {
         console.error('La connexion a échoué', error.message);
       });
-  }
-
-  private updateUserData(user) {
-
-    const userRef: AngularFirestoreDocument<any> = this.db.doc(`utilisateurs/${user.uid}`);
-
-    const data: Utilisateur = {
-      uid: user.uid,
-      mail: user.email,
-      nom: user.displayName,
-      age: 0,
-      prenom: user.displayName,
-      telephone: "",
-      voitures: [],
-      commentaires: [],
-      trajets: []
-    };
-
-    return userRef.set(data, { merge: true })
-
   }
 
   signOut() {

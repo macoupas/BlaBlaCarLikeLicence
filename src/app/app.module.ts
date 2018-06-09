@@ -16,6 +16,7 @@ import { AngularFirestoreModule} from "angularfire2/firestore";
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthProvider } from '../providers/auth/auth';
+import {FirestoreStorageProvider} from "../providers/firestore-storage/firestore-storage";
 
 export const firestoreConfig = {
   apiKey: "AIzaSyAkfcjbz2_uhX3dPY_k6lXysc25PY-z8YE",
@@ -60,7 +61,8 @@ export const firestoreConfig = {
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     StorageProvider,
-    AuthProvider
+    AuthProvider,
+    FirestoreStorageProvider
   ]
 })
 export class AppModule {}
