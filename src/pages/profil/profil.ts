@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { VoituresPage } from '../voitures/voitures';
+import {CommentairesPage } from '../commentaires/commentaires';
+import {HistoriquePage } from '../historique/historique';
 
 /**
  * Generated class for the ProfilPage page.
@@ -15,10 +18,22 @@ import { NavController, NavParams } from 'ionic-angular';
 export class ProfilPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+    this.navCtrl = navCtrl;
+}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProfilPage');
   }
-
+    
+    goToVoitures(){
+     this.navCtrl.push(VoituresPage);
+    }
+    
+    goToCommentaires(){
+    this.navCtrl.push(CommentairesPage);
+    }
+    
+    goToHistorique(){
+    this.navCtrl.push(HistoriquePage);
+    }
 }

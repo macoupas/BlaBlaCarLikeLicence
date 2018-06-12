@@ -52,24 +52,24 @@
     <ion-row>
         <ion-col>
         <ion-row padding-vertical>
-            <ion-icon name="car" class="pad10R fontSize25 colorBlue"></ion-icon>
-            <label class="colorBlue"> Liste des commentaires </label>
+            <ion-icon name="car" class="pad10R fontSize25 colorBlue" (click)="goToCommentaires()"></ion-icon>
+            <label class="colorBlue" (click)="goToCommentaires()"> Liste des commentaires </label>
         </ion-row>
       </ion-col>
     </ion-row>
     <ion-row>
         <ion-col>
         <ion-row padding-vertical>
-            <ion-icon name="car" class="pad10R fontSize25 colorBlue"></ion-icon>
-            <label class="colorBlue"> Ses voitures </label>
+            <ion-icon name="car" class="pad10R fontSize25 colorBlue" (click)="goToVoitures()"></ion-icon>
+            <label class="colorBlue" (click)="goToVoitures()"> Ses voitures </label>
         </ion-row>
       </ion-col>
     </ion-row>
     <ion-row>
         <ion-col>
         <ion-row padding-vertical>
-            <ion-icon name="car" class="pad10R fontSize25 colorBlue"></ion-icon>
-            <label class="colorBlue"> Historique des trajets </label>
+            <ion-icon name="car" class="pad10R fontSize25 colorBlue" (click)="goToHistorique()"></ion-icon>
+            <label class="colorBlue" (click)="goToHistorique()"> Historique des trajets </label>
         </ion-row>
       </ion-col>
     </ion-row>
