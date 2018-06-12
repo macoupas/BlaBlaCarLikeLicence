@@ -18,7 +18,7 @@
 
 <ion-content padding>
   <div class="justify-content-center">
-    <img src="https://dcnetworks.ie/wp/wp-content/uploads/2017/11/person-icon.png">
+    <img class="photoCompte" src="{{utilisateurConnectee.photoUrl}}">
   </div>
 
   <ion-grid col-12 justify-content-center>
@@ -26,8 +26,26 @@
       <ion-col col-12 col-sm-8 col-md-5>
         <ion-row align-items-center>
           <ion-item class="champCompte">
+            <ion-label class="labelCompte" floating> Username : </ion-label>
+            <ion-input type="text" [(ngModel)]="utilisateurConnectee.username"></ion-input>
+          </ion-item>
+        </ion-row>
+      </ion-col>
+      <ion-col col-12 col-sm-8 col-md-5>
+        <ion-row align-items-center>
+          <ion-item class="champCompte">
+            <ion-label class="labelCompte" floating> Mail : </ion-label>
+            <ion-input type="text" [(ngModel)]="utilisateurConnectee.mail"></ion-input>
+          </ion-item>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center col-12 justify-content-around>
+      <ion-col col-12 col-sm-8 col-md-5>
+        <ion-row align-items-center>
+          <ion-item class="champCompte">
             <ion-label class="labelCompte" floating> Nom : </ion-label>
-            <ion-input type="text"></ion-input>
+            <ion-input type="text" [(ngModel)]="utilisateurConnectee.nom"></ion-input>
           </ion-item>
         </ion-row>
       </ion-col>
@@ -35,7 +53,7 @@
         <ion-row align-items-center>
           <ion-item class="champCompte">
             <ion-label class="labelCompte" floating> Prénom : </ion-label>
-            <ion-input type="text"></ion-input>
+            <ion-input type="text" [(ngModel)]="utilisateurConnectee.prenom"></ion-input>
           </ion-item>
         </ion-row>
       </ion-col>
@@ -44,8 +62,8 @@
       <ion-col col-12 col-sm-8 col-md-5 >
         <ion-row align-items-center>
           <ion-item class="champCompte">
-            <ion-label class="labelCompte" floating> Mail : </ion-label>
-            <ion-input type="mail" [(ngModel)]="utilisateurConnectee.mail"></ion-input>
+            <ion-label class="labelCompte" floating> Age : </ion-label>
+            <ion-input type="number" [(ngModel)]="utilisateurConnectee.age"></ion-input>
           </ion-item>
         </ion-row>
       </ion-col>
@@ -53,18 +71,12 @@
         <ion-row align-items-center>
           <ion-item class="champCompte">
             <ion-label class="labelCompte" floating> Téléphone : </ion-label>
-            <ion-input type="text"></ion-input>
+            <ion-input type="text" [(ngModel)]="utilisateurConnectee.telephone"></ion-input>
           </ion-item>
         </ion-row>
       </ion-col>
     </ion-row>
     <ion-row col-12 align-items-center justify-content-around>
-      <ion-col col-12 col-sm-8 col-md-5 >
-        <ion-item class="champCompte">
-          <ion-label class="labelCompte" floating> Age : </ion-label>
-          <ion-input type="number"></ion-input>
-        </ion-item>
-      </ion-col>
       <ion-col col-12 col-sm-8 col-md-5>
         <ion-row padding-vertical>
             <ion-icon name="car" class="pad10R fontSize25 colorBlue"></ion-icon>

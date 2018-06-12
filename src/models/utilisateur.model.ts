@@ -1,6 +1,7 @@
 export interface Utilisateur {
   uid: String,
   username: String,
+  photoUrl: String,
   nom: String,
   prenom: String,
   mail: String,

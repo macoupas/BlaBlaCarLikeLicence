@@ -31,6 +31,7 @@ export class AuthProvider {
             this.utilisateurConnectee = {
               uid: user.uid,
               username: user.displayName,
+              photoUrl: user.photoURL,
               nom: "",
               prenom: "",
               mail: user.email,
@@ -53,7 +54,7 @@ export class AuthProvider {
   }
 
   googleLogin() {
-    const provider = new auth.GoogleAuthProvider()
+    const provider = new auth.GoogleAuthProvider();
     return this.oAuthLogin(provider);
   }
 

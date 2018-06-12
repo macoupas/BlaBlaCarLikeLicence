@@ -20,6 +20,7 @@ export class ComptePage {
   private utilisateurConnectee: Utilisateur = {
     uid: "",
     username: "",
+    photoUrl: "",
     nom: "",
     prenom: "",
     mail: "",
