@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {AuthProvider} from "../../providers/auth/auth";
 import {Utilisateur} from "../../models/utilisateur.model";
+import {FirestoreStorageProvider} from "../../providers/firestore-storage/firestore-storage";
 
 /**
  * Generated class for the ComptePage page.
@@ -17,7 +18,7 @@ import {Utilisateur} from "../../models/utilisateur.model";
 })
 export class ComptePage {
 
-  private utilisateurConnectee: Utilisateur = {
+  private utilisateur: Utilisateur = {
     uid: "",
     username: "",
     photoUrl: "",
@@ -31,15 +32,24 @@ export class ComptePage {
     trajets: []
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private auth:AuthProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private fs: FirestoreStorageProvider) {
 
   }
 
   ionViewDidLoad() {
-    this.utilisateurConnectee = this.auth.utilisateurConnectee;
-    console.debug('compteUser', this.utilisateurConnectee);
+    console.debug('compteUser', this.utilisateur);
   }
 
   setParamsCompte() {
+
+  }
+
+  creerCompte() {
+    this.fs.addUtilisateur(this.utilisateur).then(() => {
+      console.debug('Compte créé avec succes');
+    }). catch((error) => {
+      console.error('Echec de la création : ', error);
+    })
   }
 }

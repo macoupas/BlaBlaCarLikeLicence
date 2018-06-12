@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {AngularFireDatabase} from "angularfire2/database";
 import * as firebase from 'firebase';
 import {AngularFirestore} from "angularfire2/firestore";
-import {USER_PATH} from "../../models/utilisateur.model";
+import {USER_PATH, Utilisateur} from "../../models/utilisateur.model";
 
 /*
   Generated class for the FirestoreStorageProvider provider.
@@ -29,7 +29,10 @@ export class FirestoreStorageProvider {
         reject(error);
       });
     });
+  }
 
+  addUtilisateur(utilisateur: Utilisateur) {
+    return this.afs.collection(USER_PATH).doc(utilisateur.uid).set(utilisateur);
   }
 
 }

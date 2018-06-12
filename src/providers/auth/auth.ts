@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AngularFireAuth} from "angularfire2/auth";
 import {auth} from "firebase";
 import {App, NavController} from "ionic-angular";
@@ -21,13 +21,13 @@ export class AuthProvider {
 
   private navCtrl: NavController;
 
-  constructor(private afAuth: AngularFireAuth, private fs: FirestoreStorageProvider, private app:App) {
+  constructor(private afAuth: AngularFireAuth, private fs: FirestoreStorageProvider, private app: App) {
     this.afAuth.authState.subscribe(user => {
       this.navCtrl = app.getActiveNav();
-      if(user != null) {
+      if (user != null) {
         console.debug('user', user);
         this.fs.getUtilisateur(user.uid).then((utilisateur) => {
-          if(utilisateur == null) {
+          if (utilisateur == null) {
             this.utilisateurConnectee = {
               uid: user.uid,
               username: user.displayName,
@@ -44,9 +44,23 @@ export class AuthProvider {
             console.log('utilisateurConnectee', this.utilisateurConnectee);
             this.navCtrl.setRoot(ComptePage);
           } else {
-             Object.assign(this.utilisateurConnectee, utilisateur);
-             console.log('utilisateurConnectee', this.utilisateurConnectee);
-             this.navCtrl.setRoot(HomePage);
+            console.log('utilisateur', utilisateur);
+            let utilisateurConnectee = JSON.parse(JSON.stringify(utilisateur));
+            this.utilisateurConnectee = {
+              uid: utilisateurConnectee.uid,
+              username: utilisateurConnectee.username,
+              photoUrl: utilisateurConnectee.photoUrl,
+              nom: utilisateurConnectee.nom,
+              prenom: utilisateurConnectee.prenom,
+              mail: utilisateurConnectee.mail,
+              telephone: utilisateurConnectee.telephone,
+              age: utilisateurConnectee.age,
+              voitures: utilisateurConnectee.voitures,
+              commentaires: utilisateurConnectee.commentaires,
+              trajets: utilisateurConnectee.trajets
+            };
+            console.log('utilisateurConnectee', this.utilisateurConnectee);
+            this.navCtrl.setRoot(HomePage);
           }
         });
       }
@@ -63,7 +77,7 @@ export class AuthProvider {
       .then((credential) => {
         this.fs.getUtilisateur(credential.user.uid).then((utilisateur) => {
           console.log(utilisateur);
-          if(utilisateur == null) {
+          if (utilisateur == null) {
             console.log('null');
             this.navCtrl.setRoot(ComptePage);
           } else {
