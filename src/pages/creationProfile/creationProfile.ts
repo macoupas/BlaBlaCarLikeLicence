@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 /**
- * Generated class for the CreationComptePage page.
+ * Generated class for the CreationProfilePage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -11,29 +11,29 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @IonicPage()
 @Component({
-  selector: 'page-creation-compte',
-  templateUrl: 'creation-compte.html',
+  selector: 'page-creation-profile',
+  templateUrl: 'creationProfile.html',
 })
-export class CreationComptePage {
+export class CreationProfilePage {
 
-  private inscriptionForm: FormGroup;
+  private registrationForm: FormGroup;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder:FormBuilder) {
-    this.inscriptionForm = this.formBuilder.group({
-      nom: [''],
-      prenom: [''],
+    this.registrationForm = this.formBuilder.group({
+      name: [''],
+      firstName: [''],
       age: [0, Validators.min(0)],
       mail: [''],
-      mdp: [''],
-      mdpConfirm: ['']
+      password: [''],
+      passwordConfirm: ['']
     });
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CreationComptePage');
+    console.log('ionViewDidLoad CreationProfilePage');
   }
 
-  inscription() {
-    console.log('inscription');
+  signUp() {
+    console.log('signUp');
   }
 }

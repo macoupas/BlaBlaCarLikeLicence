@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {AuthProvider} from "../../providers/auth/auth";
-import {Utilisateur} from "../../models/utilisateur.model";
+import {User} from "../../models/user.model";
 import {FirestoreStorageProvider} from "../../providers/firestore-storage/firestore-storage";
 
 /**
- * Generated class for the ComptePage page.
+ * Generated class for the ProfilePage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -13,23 +12,23 @@ import {FirestoreStorageProvider} from "../../providers/firestore-storage/firest
 
 @IonicPage()
 @Component({
-  selector: 'page-compte',
-  templateUrl: 'compte.html',
+  selector: 'page-profile',
+  templateUrl: 'profile.html',
 })
-export class ComptePage {
+export class ProfilePage {
 
-  private utilisateur: Utilisateur = {
+  private user: User = {
     uid: "",
     username: "",
     photoUrl: "",
-    nom: "",
-    prenom: "",
+    name: "",
+    firstName: "",
     mail: "",
-    telephone: "",
+    phone: "",
     age: 0,
-    voitures: [],
-    commentaires: [],
-    trajets: []
+    cars: [],
+    comments: [],
+    journeys: []
   };
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -38,7 +37,7 @@ export class ComptePage {
   }
 
   ionViewDidLoad() {
-    console.debug('compteUser', this.utilisateur);
+    console.debug('profileUser', this.user);
   }
 
   setParamsCompte() {
@@ -46,10 +45,10 @@ export class ComptePage {
   }
 
   creerCompte() {
-    this.fs.addUtilisateur(this.utilisateur).then(() => {
-      console.debug('Compte créé avec succes');
+    this.fs.addUser(this.user).then(() => {
+      console.debug('Profile created with success');
     }). catch((error) => {
-      console.error('Echec de la création : ', error);
+      console.error('Creation failed : ', error);
     })
   }
 }

@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {HomePage} from '../home/home';
-import {CreationComptePage} from "../creation-compte/creation-compte";
-import {AuthProvider} from "../../providers/auth/auth";
+import {CreationProfilePage} from "../creationProfile/creationProfile";
 
 /**
  * Generated class for the LoginPage page.
@@ -31,6 +30,6 @@ export class LoginPage {
   }
 
   inscription() {
-    this.navCtrl.push(CreationComptePage);
+    this.navCtrl.push(CreationProfilePage);
   }
 }

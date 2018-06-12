@@ -1,5 +1,5 @@
 <!--
-  Generated template for the CreationComptePage page.
+  Generated template for the CreationProfilePage page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
@@ -12,18 +12,18 @@
 </ion-header>
 
 <ion-content padding justify-content-center>
-  <form [formGroup]="inscriptionForm" novalidate  (ngSubmit)="inscription()">
+  <form [formGroup]="registrationForm" novalidate  (ngSubmit)="signUp()">
     <ion-grid col-12 col-sm-8 col-md-6 col-lg-4>
       <ion-row class="mrg15B">
         <label> Incription via e-mail </label>
       </ion-row>
       <ion-row col-12 class="box-input mrg15B">
           <label col-12> Nom </label>
-          <ion-input col-12 type="text" formControlName="nom" required></ion-input>
+          <ion-input col-12 type="text" formControlName="name" required></ion-input>
       </ion-row>
       <ion-row col-12 class="box-input mrg15B">
         <label col-12> Prénom </label>
-        <ion-input col-12 type="text" formControlName="prenom" required></ion-input>
+        <ion-input col-12 type="text" formControlName="firstName" required></ion-input>
       </ion-row>
       <ion-row col-12 class="box-input mrg15B">
         <label col-12> Age </label>
@@ -35,11 +35,11 @@
       </ion-row>
       <ion-row col-12 class="box-input mrg15B">
         <label col-12> Mot de passe </label>
-        <ion-input col-12 type="password" formControlName="mdp" required></ion-input>
+        <ion-input col-12 type="password" formControlName="password" required></ion-input>
       </ion-row>
       <ion-row col-12 class="box-input mrg15B">
         <label col-12> Confirmer le mot de passe </label>
-        <ion-input col-12 type="password" formControlName="mdpConfirm" required></ion-input>
+        <ion-input col-12 type="password" formControlName="passwordConfirm" required></ion-input>
       </ion-row>
       <ion-row col-12 class="mrg15B">
         <button ion-button round col-12 type="submit">S'inscrire</button>

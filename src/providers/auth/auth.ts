@@ -5,8 +5,8 @@ import {App, NavController} from "ionic-angular";
 import {HomePage} from "../../pages/home/home";
 import {LoginPage} from "../../pages/login/login";
 import {FirestoreStorageProvider} from "../firestore-storage/firestore-storage";
-import {ComptePage} from "../../pages/compte/compte";
-import {Utilisateur} from "../../models/utilisateur.model";
+import {ProfilePage} from "../../pages/profile/profile";
+import {User} from "../../models/user.model";
 
 /*
   Generated class for the AuthProvider provider.
@@ -17,7 +17,7 @@ import {Utilisateur} from "../../models/utilisateur.model";
 @Injectable()
 export class AuthProvider {
 
-  utilisateurConnectee: Utilisateur;
+  userConnected: User;
 
   private navCtrl: NavController;
 
@@ -26,40 +26,40 @@ export class AuthProvider {
       this.navCtrl = app.getActiveNav();
       if (user != null) {
         console.debug('user', user);
-        this.fs.getUtilisateur(user.uid).then((utilisateur) => {
-          if (utilisateur == null) {
-            this.utilisateurConnectee = {
+        this.fs.getUser(user.uid).then((userInDB) => {
+          if (userInDB == null) {
+            this.userConnected = {
               uid: user.uid,
               username: user.displayName,
               photoUrl: user.photoURL,
-              nom: "",
-              prenom: "",
+              name: "",
+              firstName: "",
               mail: user.email,
-              telephone: user.phoneNumber ? user.phoneNumber : "",
+              phone: user.phoneNumber ? user.phoneNumber : "",
               age: null,
-              voitures: [],
-              commentaires: [],
-              trajets: []
+              cars: [],
+              comments: [],
+              journeys: []
             };
-            console.log('utilisateurConnectee', this.utilisateurConnectee);
-            this.navCtrl.setRoot(ComptePage);
+            console.log('userConnected', this.userConnected);
+            this.navCtrl.setRoot(ProfilePage);
           } else {
-            console.log('utilisateur', utilisateur);
-            let utilisateurConnectee = JSON.parse(JSON.stringify(utilisateur));
-            this.utilisateurConnectee = {
-              uid: utilisateurConnectee.uid,
-              username: utilisateurConnectee.username,
-              photoUrl: utilisateurConnectee.photoUrl,
-              nom: utilisateurConnectee.nom,
-              prenom: utilisateurConnectee.prenom,
-              mail: utilisateurConnectee.mail,
-              telephone: utilisateurConnectee.telephone,
-              age: utilisateurConnectee.age,
-              voitures: utilisateurConnectee.voitures,
-              commentaires: utilisateurConnectee.commentaires,
-              trajets: utilisateurConnectee.trajets
+            console.log('user', userInDB);
+            let userConnected = JSON.parse(JSON.stringify(userInDB));
+            this.userConnected = {
+              uid: userConnected.uid,
+              username: userConnected.username,
+              photoUrl: userConnected.photoUrl,
+              name: userConnected.name,
+              firstName: userConnected.firstName,
+              mail: userConnected.mail,
+              phone: userConnected.phone,
+              age: userConnected.age,
+              cars: userConnected.cars,
+              comments: userConnected.comments,
+              journeys: userConnected.journeys
             };
-            console.log('utilisateurConnectee', this.utilisateurConnectee);
+            console.log('userConnected', this.userConnected);
             this.navCtrl.setRoot(HomePage);
           }
         });
@@ -75,24 +75,26 @@ export class AuthProvider {
   private oAuthLogin(provider) {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) => {
-        this.fs.getUtilisateur(credential.user.uid).then((utilisateur) => {
-          console.log(utilisateur);
-          if (utilisateur == null) {
+        this.fs.getUser(credential.user.uid).then((user) => {
+          console.log(user);
+          if (user == null) {
             console.log('null');
-            this.navCtrl.setRoot(ComptePage);
+            this.navCtrl.setRoot(ProfilePage);
           } else {
-            console.log('non null');
+            console.log('not null');
             this.navCtrl.setRoot(HomePage);
           }
         });
       }).catch((error) => {
-        console.error('La connexion a échoué', error.message);
+        console.error('The connexion failed', error.message);
       });
   }
 
   signOut() {
     this.afAuth.auth.signOut().then(() => {
       this.navCtrl.setRoot(LoginPage);
+    }).catch((error) => {
+      console.error('SignOut Failed', error);
     });
   }
 }
