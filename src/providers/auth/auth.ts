@@ -18,53 +18,26 @@ import {User} from "../../models/user.model";
 export class AuthProvider {
 
   userConnected: User;
+  newUser: boolean;
+  private authenticated = false;
 
-  private navCtrl: NavController;
+  constructor(private afAuth: AngularFireAuth, private fs: FirestoreStorageProvider) {
 
-  constructor(private afAuth: AngularFireAuth, private fs: FirestoreStorageProvider, private app: App) {
-    this.afAuth.authState.subscribe(user => {
-      this.navCtrl = app.getActiveNav();
-      if (user != null) {
-        console.debug('user', user);
-        this.fs.getUser(user.uid).then((userInDB) => {
-          if (userInDB == null) {
-            this.userConnected = {
-              uid: user.uid,
-              username: user.displayName,
-              photoUrl: user.photoURL,
-              name: "",
-              firstName: "",
-              mail: user.email,
-              phone: user.phoneNumber ? user.phoneNumber : "",
-              age: null,
-              cars: [],
-              comments: [],
-              journeys: []
-            };
-            console.log('userConnected', this.userConnected);
-            this.navCtrl.setRoot(ProfilePage);
-          } else {
-            console.log('user', userInDB);
-            let userConnected = JSON.parse(JSON.stringify(userInDB));
-            this.userConnected = {
-              uid: userConnected.uid,
-              username: userConnected.username,
-              photoUrl: userConnected.photoUrl,
-              name: userConnected.name,
-              firstName: userConnected.firstName,
-              mail: userConnected.mail,
-              phone: userConnected.phone,
-              age: userConnected.age,
-              cars: userConnected.cars,
-              comments: userConnected.comments,
-              journeys: userConnected.journeys
-            };
-            console.log('userConnected', this.userConnected);
-            this.navCtrl.setRoot(HomePage);
-          }
-        });
-      }
-    });
+  }
+
+  isAuthenticated() {
+    return new Promise((resolve => {
+      this.afAuth.authState.subscribe(user => {
+        if (user != null) {
+          this.setUserConnected(user).then(() => {
+            resolve(this.authenticated);
+          });
+        } else {
+          this.authenticated = false;
+          resolve(this.authenticated);
+        }
+      });
+    }))
   }
 
   googleLogin() {
@@ -73,28 +46,69 @@ export class AuthProvider {
   }
 
   private oAuthLogin(provider) {
-    return this.afAuth.auth.signInWithPopup(provider)
-      .then((credential) => {
-        this.fs.getUser(credential.user.uid).then((user) => {
-          console.log(user);
-          if (user == null) {
-            console.log('null');
-            this.navCtrl.setRoot(ProfilePage);
-          } else {
-            console.log('not null');
-            this.navCtrl.setRoot(HomePage);
-          }
-        });
-      }).catch((error) => {
-        console.error('The connexion failed', error.message);
+    return new Promise((resolve, reject) => {
+      this.afAuth.auth.signInWithPopup(provider)
+        .then((credential) => {
+          this.setUserConnected(credential.user).then((user) => {
+            resolve(user);
+          });
+        }).catch((error) => {
+        reject(error);
       });
+    })
+  }
+
+  setUserConnected(user) {
+    return new Promise( (resolve, reject) => {
+      this.fs.getUser(user.uid).then((userInDB) => {
+        if (userInDB == null) {
+          this.userConnected = {
+            uid: user.uid,
+            username: user.displayName,
+            photoUrl: user.photoURL,
+            name: "",
+            firstName: "",
+            mail: user.email,
+            phone: user.phoneNumber ? user.phoneNumber : "",
+            age: null,
+            cars: [],
+            comments: [],
+            journeys: []
+          };
+          this.authenticated = true;
+          this.newUser = true;
+          console.log('userConnected', this.userConnected);
+          resolve(this.userConnected);
+        } else {
+          console.log('user', userInDB);
+          let userConnected = JSON.parse(JSON.stringify(userInDB));
+          this.userConnected = {
+            uid: userConnected.uid,
+            username: userConnected.username,
+            photoUrl: userConnected.photoUrl,
+            name: userConnected.name,
+            firstName: userConnected.firstName,
+            mail: userConnected.mail,
+            phone: userConnected.phone,
+            age: userConnected.age,
+            cars: userConnected.cars,
+            comments: userConnected.comments,
+            journeys: userConnected.journeys
+          };
+          this.authenticated = true;
+          this.newUser = false;
+          console.log('userConnected', this.userConnected);
+          resolve(this.userConnected);
+        }
+      }).catch((error) => {
+        console.error(error);
+        reject(error);
+      });
+    })
+
   }
 
   signOut() {
-    this.afAuth.auth.signOut().then(() => {
-      this.navCtrl.setRoot(LoginPage);
-    }).catch((error) => {
-      console.error('SignOut Failed', error);
-    });
+    return this.afAuth.auth.signOut();
   }
 }

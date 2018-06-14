@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {User} from "../../models/user.model";
 import {FirestoreStorageProvider} from "../../providers/firestore-storage/firestore-storage";
+import {AuthProvider} from "../../providers/auth/auth";
 
 /**
  * Generated class for the ProfilePage page.
@@ -31,13 +32,14 @@ export class ProfilePage {
     journeys: []
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController, public navParams: NavParams, private auth:AuthProvider,
               private fs: FirestoreStorageProvider) {
-
   }
 
   ionViewDidLoad() {
     console.debug('profileUser', this.user);
+    console.debug('userAuth', this.auth.userConnected);
+    Object.assign(this.user, this.auth.userConnected);
   }
 
   setParamsCompte() {
