@@ -58,6 +58,10 @@ export class AuthProvider {
     })
   }
 
+  signInWithEmailAndPassword(email, password) {
+    return this.afAuth.auth.signInWithEmailAndPassword(email, password);
+  }
+
   setUserConnected(user) {
     return new Promise( (resolve, reject) => {
       this.fs.getUser(user.uid).then((userInDB) => {

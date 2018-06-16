@@ -18,6 +18,8 @@ import {ProfilePage} from "../profile/profile";
 })
 export class LoginPage {
 
+  email = "";
+  password = "";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthProvider) {
     this.auth.isAuthenticated().then((authenticated) => {
@@ -37,7 +39,11 @@ export class LoginPage {
   }
 
   logIn() {
-    this.navCtrl.setRoot(HomePage);
+    this.auth.signInWithEmailAndPassword(this.email, this.password).then(() => {
+      this.navCtrl.setRoot(HomePage);
+    }).catch((error) => {
+      console.error(error);
+    });
   }
 
   logInWithGoogle() {

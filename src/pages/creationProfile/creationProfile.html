@@ -18,6 +18,10 @@
         <label> Incription via e-mail </label>
       </ion-row>
       <ion-row col-12 class="box-input mrg15B">
+        <label col-12> Username </label>
+        <ion-input col-12 type="text" formControlName="username" required></ion-input>
+      </ion-row>
+      <ion-row col-12 class="box-input mrg15B">
           <label col-12> Nom </label>
           <ion-input col-12 type="text" formControlName="name" required></ion-input>
       </ion-row>
@@ -46,6 +50,10 @@
       </ion-row>
     </ion-grid>
   </form>
+  <div col-12 *ngFor="let message of errorMessages">
+    <span *ngIf="message != ''" class="error-span">{{message}}</span>
+  </div>
+
 
 </ion-content>
 
