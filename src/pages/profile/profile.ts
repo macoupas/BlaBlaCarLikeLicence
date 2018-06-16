@@ -49,6 +49,7 @@ export class ProfilePage {
   creerCompte() {
     this.fs.addUser(this.user).then(() => {
       console.debug('Profile created with success');
+      this.auth.newUser = false;
     }). catch((error) => {
       console.error('Creation failed : ', error);
     })

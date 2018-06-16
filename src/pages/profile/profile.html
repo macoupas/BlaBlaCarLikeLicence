@@ -85,8 +85,8 @@
       </ion-col>
     </ion-row>
     <ion-row justify-content-center>
-      <button ion-button (click)="creerCompte()">Créer mon compte</button>
-      <button ion-button (click)="setParamsCompte()">Modifier</button>
+      <button ion-button *ngIf="auth.newUser" (click)="creerCompte()">Créer mon compte</button>
+      <button ion-button *ngIf="!auth.newUser" (click)="setParamsCompte()">Modifier</button>
     </ion-row>
   </ion-grid>
 
