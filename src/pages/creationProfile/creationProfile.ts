@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthProvider} from "../../providers/auth/auth";
+import {FirestoreStorageProvider} from "../../providers/firestore-storage/firestore-storage";
 
 /**
  * Generated class for the CreationProfilePage page.
@@ -21,13 +22,13 @@ export class CreationProfilePage {
 
   errorMessages = [];
   constructor(public navCtrl: NavController, public navParams: NavParams, private formBuilder:FormBuilder,
-              private auth:AuthProvider) {
+              private auth:AuthProvider, private fs: FirestoreStorageProvider) {
     this.registrationForm = this.formBuilder.group({
       username: [''],
       name: [''],
       firstName: [''],
       age: [0, Validators.min(0)],
-      mail: [''],
+      email: [''],
       password: [''],
       passwordConfirm: ['']
     });
@@ -41,9 +42,14 @@ export class CreationProfilePage {
     if(!this.formIsValid()) {
       console.error('Formulaire non valide', this.registrationForm);
     } else {
-      console.log('signUp');
+      console.log('email', this.registrationForm.controls.email.value);
+      this.auth.createUserWithEmailAndPassword(this.registrationForm.value.email,
+        this.registrationForm.value.password).then( (user) => {
+          console.log(user);
+      }).catch(error => {
+        console.error(error);
+      });
     }
-
   }
 
   private formIsValid() {
@@ -61,7 +67,7 @@ export class CreationProfilePage {
       if(this.registrationForm.controls.age.invalid) {
         this.errorMessages.push("Veuillez verifier que votre age est supérieur à 0");
       }
-      if(this.registrationForm.controls.mail.invalid) {
+      if(this.registrationForm.controls.email.invalid) {
         this.errorMessages.push("Veuillez renseigner votre mail");
       }
       if(this.registrationForm.controls.firstName.invalid) {
