@@ -1,11 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AngularFireAuth} from "angularfire2/auth";
 import {auth} from "firebase";
-import {App, NavController} from "ionic-angular";
-import {HomePage} from "../../pages/home/home";
-import {LoginPage} from "../../pages/login/login";
 import {FirestoreStorageProvider} from "../firestore-storage/firestore-storage";
-import {ProfilePage} from "../../pages/profile/profile";
 import {User} from "../../models/user.model";
 
 /*
@@ -65,7 +61,6 @@ export class AuthProvider {
   createUserWithEmailAndPassword(email: string, password: string) : Promise<User> {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(credential => {
-        console.log('authUser', credential);
         let newUser = {
           uid: credential.user.uid,
           username: credential.user.displayName,
@@ -105,10 +100,9 @@ export class AuthProvider {
           };
           this.authenticated = true;
           this.newUser = true;
-          console.log('userConnected', this.userConnected);
+          console.debug('userConnected', this.userConnected);
           resolve(this.userConnected);
         } else {
-          console.log('user', userInDB);
           let userConnected = JSON.parse(JSON.stringify(userInDB));
           this.userConnected = {
             uid: userConnected.uid,
@@ -125,7 +119,7 @@ export class AuthProvider {
           };
           this.authenticated = true;
           this.newUser = false;
-          console.log('userConnected', this.userConnected);
+          console.debug('userConnected', this.userConnected);
           resolve(this.userConnected);
         }
       }).catch((error) => {

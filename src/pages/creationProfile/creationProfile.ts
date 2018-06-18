@@ -44,7 +44,6 @@ export class CreationProfilePage {
     if(!this.formIsValid()) {
       console.error('Formulaire non valide', this.registrationForm);
     } else {
-      console.log('email', this.registrationForm.controls.email.value);
       this.auth.createUserWithEmailAndPassword(this.registrationForm.value.email,
         this.registrationForm.value.password).then( (user) => {
           user.username = this.registrationForm.value.username;
@@ -52,7 +51,6 @@ export class CreationProfilePage {
           user.firstName = this.registrationForm.value.firstName;
           user.phone = this.registrationForm.value.phone;
           user.age = this.registrationForm.value.age;
-          console.debug('creationUser', user);
           this.fs.addUser(user).then((result) => {
             this.auth.userConnected = user;
             this.navCtrl.setRoot(HomePage);

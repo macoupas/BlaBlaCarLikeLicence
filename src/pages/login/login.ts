@@ -20,6 +20,7 @@ export class LoginPage {
 
   email = "";
   password = "";
+  errorMessages = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthProvider) {
     this.auth.isAuthenticated().then((authenticated) => {
@@ -42,7 +43,8 @@ export class LoginPage {
     this.auth.signInWithEmailAndPassword(this.email, this.password).then(() => {
       this.navCtrl.setRoot(HomePage);
     }).catch((error) => {
-      console.error(error);
+      this.errorMessages = [];
+      this.errorMessages.push(String(error.message));
     });
   }
 

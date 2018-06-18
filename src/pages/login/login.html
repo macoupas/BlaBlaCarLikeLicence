@@ -48,7 +48,9 @@
         <button ion-button class="margin-top20" (click)="logIn()">Se connecter</button>
       </ion-col>
     </ion-row>
-
   </ion-grid>
+  <div col-12 *ngFor="let message of errorMessages">
+    <span *ngIf="message != ''" class="error-span">{{message}}</span>
+  </div>
 
 </ion-content>
