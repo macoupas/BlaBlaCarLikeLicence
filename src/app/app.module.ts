@@ -16,6 +16,9 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthProvider } from '../providers/auth/auth';
 import {FirestoreStorageProvider} from "../providers/firestore-storage/firestore-storage";
+import { PlaceProvider } from '../providers/place/place';
+import { ConnectionProvider } from '../providers/connection/connection';
+import { GoogleMapsProvider } from '../providers/google-maps/google-maps';
 
 export const firestoreConfig = {
   apiKey: "AIzaSyAkfcjbz2_uhX3dPY_k6lXysc25PY-z8YE",
@@ -24,6 +27,10 @@ export const firestoreConfig = {
   projectId: "gestion-de-covoiturage",
   storageBucket: "gestion-de-covoiturage.appspot.com",
   messagingSenderId: "692627907333"
+};
+
+export const placeConfig = {
+  apiKey: "AIzaSyBMlJvrcL543uamEbaJ6mIXTA4WhB7YOqg"
 };
 
 @NgModule({
@@ -61,7 +68,10 @@ export const firestoreConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     StorageProvider,
     AuthProvider,
-    FirestoreStorageProvider
+    FirestoreStorageProvider,
+    PlaceProvider,
+    ConnectionProvider,
+    GoogleMapsProvider
   ]
 })
 export class AppModule {}
