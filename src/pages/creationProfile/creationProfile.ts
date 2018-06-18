@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthProvider} from "../../providers/auth/auth";
 import {FirestoreStorageProvider} from "../../providers/firestore-storage/firestore-storage";
+import {HomePage} from "../home/home";
 
 /**
  * Generated class for the CreationProfilePage page.
@@ -28,6 +29,7 @@ export class CreationProfilePage {
       name: [''],
       firstName: [''],
       age: [0, Validators.min(0)],
+      phone: [''],
       email: [''],
       password: [''],
       passwordConfirm: ['']
@@ -45,7 +47,18 @@ export class CreationProfilePage {
       console.log('email', this.registrationForm.controls.email.value);
       this.auth.createUserWithEmailAndPassword(this.registrationForm.value.email,
         this.registrationForm.value.password).then( (user) => {
-          console.log(user);
+          user.username = this.registrationForm.value.username;
+          user.name = this.registrationForm.value.name;
+          user.firstName = this.registrationForm.value.firstName;
+          user.phone = this.registrationForm.value.phone;
+          user.age = this.registrationForm.value.age;
+          console.debug('creationUser', user);
+          this.fs.addUser(user).then((result) => {
+            this.auth.userConnected = user;
+            this.navCtrl.setRoot(HomePage);
+          }).catch((error) => {
+            console.error(error);
+          })
       }).catch(error => {
         console.error(error);
       });
@@ -66,6 +79,9 @@ export class CreationProfilePage {
       }
       if(this.registrationForm.controls.age.invalid) {
         this.errorMessages.push("Veuillez verifier que votre age est supérieur à 0");
+      }
+      if(this.registrationForm.controls.phone.invalid) {
+        this.errorMessages.push("Veuillez bien renseigner votre numéro de téléphone");
       }
       if(this.registrationForm.controls.email.invalid) {
         this.errorMessages.push("Veuillez renseigner votre mail");

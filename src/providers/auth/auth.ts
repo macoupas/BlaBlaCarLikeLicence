@@ -62,18 +62,31 @@ export class AuthProvider {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password);
   }
 
-  createUserWithEmailAndPassword(email: string, password: string) {
+  createUserWithEmailAndPassword(email: string, password: string) : Promise<User> {
     return new Promise((resolve, reject) => {
-      this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(user => {
-        resolve(user);
+      this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(credential => {
+        console.log('authUser', credential);
+        let newUser = {
+          uid: credential.user.uid,
+          username: credential.user.displayName,
+          photoUrl: credential.user.photoURL ? credential.user.photoUrl : "https://lh3.googleusercontent.com/-B9i-RZi6N2k/AAAAAAAAAAI/AAAAAAAAAAA/UPUF_A8N9u8/photo.jpg",
+          name: "",
+          firstName: "",
+          mail: credential.user.email,
+          phone: credential.user.phoneNumber ? credential.user.phoneNumber : "",
+          age: null,
+          cars: [],
+          comments: [],
+          journeys: []
+        };
+         resolve(newUser);
       }).catch(error => {
         reject(error);
       });
     })
-
   }
 
-  setUserConnected(user) {
+  setUserConnected(user) : Promise<User> {
     return new Promise( (resolve, reject) => {
       this.fs.getUser(user.uid).then((userInDB) => {
         if (userInDB == null) {
