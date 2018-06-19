@@ -19,6 +19,9 @@ import {FirestoreStorageProvider} from "../providers/firestore-storage/firestore
 import { PlaceProvider } from '../providers/place/place';
 import { ConnectionProvider } from '../providers/connection/connection';
 import { GoogleMapsProvider } from '../providers/google-maps/google-maps';
+import {SearchJourneyPage} from "../pages/search-journey/search-journey";
+import {Network} from "@ionic-native/network";
+import { Geolocation } from '@ionic-native/geolocation';
 
 export const firestoreConfig = {
   apiKey: "AIzaSyAkfcjbz2_uhX3dPY_k6lXysc25PY-z8YE",
@@ -40,7 +43,8 @@ export const placeConfig = {
     ListPage,
     LoginPage,
 	  ProfilePage,
-    CreationProfilePage
+    CreationProfilePage,
+    SearchJourneyPage
   ],
   imports: [
     BrowserModule,
@@ -60,7 +64,8 @@ export const placeConfig = {
     ListPage,
     LoginPage,
 	  ProfilePage,
-    CreationProfilePage
+    CreationProfilePage,
+    SearchJourneyPage
   ],
   providers: [
     StatusBar,
@@ -71,7 +76,9 @@ export const placeConfig = {
     FirestoreStorageProvider,
     PlaceProvider,
     ConnectionProvider,
-    GoogleMapsProvider
+    GoogleMapsProvider,
+    Network,
+    Geolocation,
   ]
 })
 export class AppModule {}
