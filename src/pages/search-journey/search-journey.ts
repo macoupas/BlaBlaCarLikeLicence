@@ -3,6 +3,7 @@ import { Component, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation';
 import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
 import {} from '@types/googlemaps';
+import {PlaceProvider} from "../../providers/place/place";
 
 /**
  * Generated class for the SearchJourneyPage page.
@@ -34,7 +35,9 @@ export class SearchJourneyPage {
   startJourneyMarker;
   endJourneyMarker;
 
-  constructor(public navCtrl: NavController, public zone: NgZone, public maps: GoogleMapsProvider, public platform: Platform, public geolocation: Geolocation, public viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public zone: NgZone, public maps: GoogleMapsProvider,
+              public platform: Platform, public geolocation: Geolocation,
+              public viewCtrl: ViewController, public places: PlaceProvider) {
     this.searchDisabled = true;
   }
 
@@ -42,8 +45,8 @@ export class SearchJourneyPage {
 
     this.maps.init(this.mapElement.nativeElement, this.pleaseConnect.nativeElement).then(() => {
 
-      this.autocompleteService = new google.maps.places.AutocompleteService();
-      this.placesService = new google.maps.places.PlacesService(this.maps.map);
+      this.places.autocompleteService = new google.maps.places.AutocompleteService();
+      this.places.placesService = new google.maps.places.PlacesService(this.maps.map);
       this.searchDisabled = false;
 
     });
@@ -70,8 +73,8 @@ export class SearchJourneyPage {
       }
     }
 
-    this.placesService.getDetails({placeId: place.place_id}, (details) => {
-
+    this.places.getPlaceDetails(place).then((details) => {
+      console.debug(details);
       this.zone.run(() => {
 
         location.name = details.name;
@@ -102,17 +105,12 @@ export class SearchJourneyPage {
         this.endPlaces = [];
       }
     });
-
   }
 
   searchPlaces(query: string, type: string){
-    if(query.length > 0 && !this.searchDisabled) {
-      let config = {
-        types: ['geocode'],
-        input: query
-      };
-
-      this.getPlacePredictions(config).then(predictions => {
+    if(!this.searchDisabled) {
+      this.places.getPlacePredictions(query).then((predictions) => {
+        console.debug('predictions', predictions);
         if(type == "start") {
           this.startPlaces = [];
         } else {
@@ -125,8 +123,7 @@ export class SearchJourneyPage {
             this.endPlaces.push(prediction);
           }
         });
-      })
-
+      });
     } else {
       if(type == "start") {
         this.startPlaces = [];

@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ConnectionProvider} from "../connection/connection";
-import { Geolocation } from '@ionic-native/geolocation';
+import {Geolocation} from '@ionic-native/geolocation';
 
 
 /*
@@ -35,12 +35,11 @@ export class GoogleMapsProvider {
 
     return new Promise((resolve) => {
 
-      if(typeof google == "undefined" || typeof google.maps == "undefined"){
+      if (typeof google == "undefined" || typeof google.maps == "undefined") {
 
-        console.error("Google maps JavaScript needs to be loaded.");
         this.disableMap();
 
-        if(this.connectivityService.isOnline()){
+        if (this.connectivityService.isOnline()) {
 
           window['mapInit'] = () => {
 
@@ -54,7 +53,7 @@ export class GoogleMapsProvider {
           let script = document.createElement("script");
           script.id = "googleMaps";
 
-          if(this.apiKey){
+          if (this.apiKey) {
             script.src = 'http://maps.google.com/maps/api/js?key=' + this.apiKey + '&callback=mapInit&libraries=places';
           } else {
             script.src = 'http://maps.google.com/maps/api/js?callback=mapInit';
@@ -65,7 +64,7 @@ export class GoogleMapsProvider {
         }
       } else {
 
-        if(this.connectivityService.isOnline()){
+        if (this.connectivityService.isOnline()) {
           this.initMap();
           this.enableMap();
         }
@@ -110,7 +109,7 @@ export class GoogleMapsProvider {
 
   disableMap(): void {
 
-    if(this.pleaseConnect){
+    if (this.pleaseConnect) {
       this.pleaseConnect.style.display = "block";
     }
 
@@ -118,7 +117,7 @@ export class GoogleMapsProvider {
 
   enableMap(): void {
 
-    if(this.pleaseConnect){
+    if (this.pleaseConnect) {
       this.pleaseConnect.style.display = "none";
     }
 
@@ -130,11 +129,11 @@ export class GoogleMapsProvider {
 
       setTimeout(() => {
 
-        if(typeof google == "undefined" || typeof google.maps == "undefined"){
+        if (typeof google == "undefined" || typeof google.maps == "undefined") {
           this.loadGoogleMaps();
         }
         else {
-          if(!this.mapInitialised){
+          if (!this.mapInitialised) {
             this.initMap();
           }
 
