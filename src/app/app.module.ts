@@ -22,6 +22,7 @@ import { GoogleMapsProvider } from '../providers/google-maps/google-maps';
 import {SearchJourneyPage} from "../pages/search-journey/search-journey";
 import {Network} from "@ionic-native/network";
 import { Geolocation } from '@ionic-native/geolocation';
+import {CreateJourneyPage} from "../pages/create-journey/create-journey";
 
 export const firestoreConfig = {
   apiKey: "AIzaSyAkfcjbz2_uhX3dPY_k6lXysc25PY-z8YE",
@@ -44,7 +45,8 @@ export const placeConfig = {
     LoginPage,
 	  ProfilePage,
     CreationProfilePage,
-    SearchJourneyPage
+    SearchJourneyPage,
+    CreateJourneyPage
   ],
   imports: [
     BrowserModule,
@@ -65,7 +67,8 @@ export const placeConfig = {
     LoginPage,
 	  ProfilePage,
     CreationProfilePage,
-    SearchJourneyPage
+    SearchJourneyPage,
+    CreateJourneyPage
   ],
   providers: [
     StatusBar,

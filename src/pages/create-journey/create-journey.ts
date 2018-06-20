@@ -1,26 +1,30 @@
-import {IonicPage, NavController, Platform, ViewController} from 'ionic-angular';
-import { Component, ElementRef, ViewChild, NgZone } from '@angular/core';
-import { Geolocation } from '@ionic-native/geolocation';
-import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
-import {} from '@types/googlemaps';
+import {Component, ElementRef, NgZone, ViewChild} from '@angular/core';
+import {IonicPage, NavController, NavParams, Platform, ViewController} from 'ionic-angular';
 import {PlaceProvider} from "../../providers/place/place";
+import {Geolocation} from "@ionic-native/geolocation";
+import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
+import {forEach} from "@angular/router/src/utils/collection";
 
 /**
- * Generated class for the SearchJourneyPage page.
+ * Generated class for the CreateJourneyPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
 
+const NB_PLACES_MAX = 10;
+
 @IonicPage()
 @Component({
-  selector: 'page-search-journey',
-  templateUrl: 'search-journey.html',
+  selector: 'page-create-journey',
+  templateUrl: 'create-journey.html',
 })
-export class SearchJourneyPage {
+export class CreateJourneyPage {
 
   @ViewChild('map') mapElement: ElementRef;
   @ViewChild('pleaseConnect') pleaseConnect: ElementRef;
+
+  private placesSelect = [];
 
   latitude: number;
   longitude: number;
@@ -37,6 +41,9 @@ export class SearchJourneyPage {
               public platform: Platform, public geolocation: Geolocation,
               public viewCtrl: ViewController, public places: PlaceProvider) {
     this.searchDisabled = true;
+    for(let i=1;i<=NB_PLACES_MAX; i++) {
+      this.placesSelect.push(i);
+    }
   }
 
   ionViewDidLoad(): void {
