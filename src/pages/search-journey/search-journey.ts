@@ -116,13 +116,25 @@ export class SearchJourneyPage {
         } else {
           this.endPlaces = [];
         }
-        predictions.forEach((prediction) => {
+        if(predictions) {
+          predictions.forEach((prediction) => {
+            if(type == "start") {
+              this.startPlaces.push(prediction);
+            } else {
+              this.endPlaces.push(prediction);
+            }
+          });
+        } else {
           if(type == "start") {
-            this.startPlaces.push(prediction);
+            if(this.startJourneyMarker) {
+              this.startJourneyMarker.setMap(null);
+            }
           } else {
-            this.endPlaces.push(prediction);
+            if(this.endJourneyMarker) {
+              this.endJourneyMarker.setMap(null);
+            }
           }
-        });
+        }
       });
     } else {
       if(type == "start") {
