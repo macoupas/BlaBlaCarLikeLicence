@@ -1,17 +1,17 @@
-import { Component, ViewChild } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {App, Nav, Platform} from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
 
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import {HomePage} from '../pages/home/home';
+import {ListPage} from '../pages/list/list';
 import {ProfilePage} from "../pages/profile/profile";
-import {LoginPage } from '../pages/login/login';
+import {LoginPage} from '../pages/login/login';
 import {AuthProvider} from "../providers/auth/auth";
-import {ProfilPage } from '../pages/profil/profil';
-import {VoituresPage } from '../pages/voitures/voitures';
-import {CommentairesPage } from '../pages/commentaires/commentaires';
-import {HistoriquePage } from '../pages/historique/historique';
+import {ProfilPage} from '../pages/profil/profil';
+import {VoituresPage} from '../pages/voitures/voitures';
+import {CommentairesPage} from '../pages/commentaires/commentaires';
+import {HistoriquePage} from '../pages/historique/historique';
 
 @Component({
   templateUrl: 'app.html'
@@ -21,17 +21,17 @@ export class MyApp {
 
   rootPage: any = LoginPage;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string, component: any }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,private app:App, private auth:AuthProvider) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private app: App, private auth: AuthProvider) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage },
-	  { title: 'Mon profile', component: ProfilePage }
-	  { title: 'Mon profil publique', component: ProfilPage }
+      {title: 'Home', component: HomePage},
+      {title: 'List', component: ListPage},
+      {title: 'Mon profile', component: ProfilePage},
+      {title: 'Mon profil publique', component: ProfilPage}
     ];
 
   }
