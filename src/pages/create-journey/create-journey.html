@@ -14,57 +14,60 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-grid no-padding col-12>
-    <ion-row no-padding>
-      <ion-col no-padding col-12>
-        <ion-label class="fontSize20"> Lieu de départ</ion-label>
-        <ion-searchbar no-padding [(ngModel)]="startQuery" (ionInput)="searchPlaces(startQuery, 'start')"
-                       placeholder="Départ"></ion-searchbar>
-        <ion-list>
-          <ion-item *ngFor="let place of startPlaces" (click)="selectPlace(place, 'start')">{{place.description}}
+  <form [formGroup]="journeyForm" novalidate (ngSubmit)="createJourney()">
+    <ion-grid no-padding col-12>
+      <ion-row no-padding>
+        <ion-col no-padding col-12>
+          <ion-label class="fontSize20"> Lieu de départ</ion-label>
+          <ion-searchbar no-padding formControlName="startQuery" (ionInput)="searchPlaces(journeyForm.value.startQuery, 'start')"
+                         placeholder="Départ"></ion-searchbar>
+          <ion-list>
+            <ion-item *ngFor="let place of startPlaces" (click)="selectPlace(place, 'start')">{{place.description}}
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col no-padding col-12>
+          <ion-label class="fontSize20"> Lieu d'arrivé</ion-label>
+          <ion-searchbar no-padding formControlName="endQuery" (ionInput)="searchPlaces(journeyForm.value.endQuery, 'dest')"
+                         placeholder="Destination"></ion-searchbar>
+          <ion-list>
+            <ion-item *ngFor="let place of endPlaces" (click)="selectPlace(place, 'dest')">{{place.description}}
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col no-padding col-12>
+          <ion-item>
+            <ion-label>Heure de départ</ion-label>
+            <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" formControlName="startTime" required></ion-datetime>
           </ion-item>
-        </ion-list>
-      </ion-col>
-      <ion-col no-padding col-12>
-        <ion-label class="fontSize20"> Lieu d'arrivé</ion-label>
-        <ion-searchbar no-padding [(ngModel)]="endQuery" (ionInput)="searchPlaces(endQuery, 'dest')"
-                       placeholder="Destination"></ion-searchbar>
-        <ion-list>
-          <ion-item *ngFor="let place of endPlaces" (click)="selectPlace(place, 'dest')">{{place.description}}
+
+          <ion-item>
+            <ion-label>Date de départ</ion-label>
+            <ion-datetime displayFormat="MMM DD YYYY" formControlName="startDate" required></ion-datetime>
           </ion-item>
-        </ion-list>
-      </ion-col>
-      <ion-col no-padding col-12>
-        <ion-item>
-          <ion-label>Heure de départ</ion-label>
-          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A"></ion-datetime>
-        </ion-item>
 
-        <ion-item>
-          <ion-label>Date de départ</ion-label>
-          <ion-datetime displayFormat="MMM DD YYYY"></ion-datetime>
-        </ion-item>
+          <ion-item>
+            <ion-label>Prix en €</ion-label>
+            <ion-input type="number" formControlName="price" required></ion-input>
+          </ion-item>
 
-        <ion-item>
-          <ion-label>Prix en €</ion-label>
-          <ion-input type="number"></ion-input>
-        </ion-item>
+          <ion-item>
+            <ion-label>Nombre de places</ion-label>
+            <ion-input type="number" formControlName="placesCar" required></ion-input>
+          </ion-item>
 
-        <ion-item>
-          <ion-label>Nombre de places</ion-label>
-          <ion-input type="number"></ion-input>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <div #pleaseConnect id="please-connect">
-        <p>Please connect to the Internet...</p>
-      </div>
+          <button ion-button col-12 round class="mrg20T" (click)="createJourney()">Créer le trajet</button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <div #pleaseConnect id="please-connect">
+          <p>Please connect to the Internet...</p>
+        </div>
 
-      <div #map id="map">
-        <ion-spinner></ion-spinner>
-      </div>
-    </ion-row>
-  </ion-grid>
-
+        <div #map id="map">
+          <ion-spinner></ion-spinner>
+        </div>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>

@@ -1,15 +1,20 @@
-import {Component, ElementRef, NgZone, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams, Platform, ViewController} from 'ionic-angular';
+import {Component, ElementRef, ViewChild} from '@angular/core';
+import {IonicPage} from 'ionic-angular';
 import {PlaceProvider} from "../../providers/place/place";
-import {Geolocation} from "@ionic-native/geolocation";
 import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
-import {forEach} from "@angular/router/src/utils/collection";
 import {Journey} from "../../models/journey.model";
 import {FirestoreStorageProvider} from "../../providers/firestore-storage/firestore-storage";
 import {
   CITY_DETAILS, COUNTRY_DETAILS, COUNTY_DETAILS, Place, POSTAL_CODE_DETAILS, REGION_DETAILS, STREET_DETAILS,
   STREET_NUMBER_DETAILS
 } from "../../models/place.model";
+import * as firebase from "firebase";
+import Timestamp = firebase.firestore.Timestamp;
+import * as moment from "moment";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import Timestamp = firebase.firestore.Timestamp;
+import Timestamp = firebase.firestore.Timestamp;
+import {AuthProvider} from "../../providers/auth/auth";
 
 /**
  * Generated class for the CreateJourneyPage page.
@@ -32,39 +37,43 @@ export class CreateJourneyPage {
 
   private placesSelect = [];
 
-  latitude: number;
-  longitude: number;
   startQuery: string = '';
   endQuery: string = '';
   startPlaces: any = [];
   endPlaces: any = [];
   searchDisabled: boolean;
-  location: any;
-  startJourneyMarker;
-  endJourneyMarker;
 
-  startJourneyPlace: Place;
-  endJourneyPlace: Place;
+  startDate: string;
+  startTime: string;
+
+  private journeyForm: FormGroup;
 
   journey: Journey = {
     uid: "",
     startPlace: null,
     endPlace: null,
     startDate: null,
-    endDate: null,
     driverId: "",
     placesCar: 0,
     remainingPlacesCar: 0,
     price: 0
   };
 
-  constructor(public navCtrl: NavController, public zone: NgZone, public maps: GoogleMapsProvider,
-              public platform: Platform, public geolocation: Geolocation,
-              public viewCtrl: ViewController, public places: PlaceProvider, public fs: FirestoreStorageProvider) {
+  constructor(public maps: GoogleMapsProvider, public places: PlaceProvider, private fb: FormBuilder,
+              public fs: FirestoreStorageProvider, private auth: AuthProvider) {
     this.searchDisabled = true;
     for(let i=1;i<=NB_PLACES_MAX; i++) {
       this.placesSelect.push(i);
     }
+
+    this.journeyForm = this.fb.group({
+      startQuery: [''],
+      endQuery: [''],
+      startDate: [''],
+      startTime: [''],
+      placesCar: [0, Validators.min(1)],
+      price: [0, Validators.min(1)]
+    });
   }
 
   ionViewDidLoad(): void {
@@ -79,56 +88,42 @@ export class CreateJourneyPage {
 
   }
 
+  createJourney() {
+    console.debug('heure', this.startTime);
+    console.debug('date', this.startDate);
+    let date = moment(this.journeyForm.value.startDate + " " + this.journeyForm.value.startTime).format();
+    let timestamp = moment(date);
+    console.debug('date', date);
+    console.debug('timestamp', timestamp);
+    if(this.journeyForm.valid) {
+      this.journey.uid = this.fs.createId();
+      this.journey.startDate = Timestamp.fromDate(new Date(date));
+      this.journey.driverId = this.auth.userConnected.uid;
+      this.journey.placesCar = this.journeyForm.value.placesCar;
+      this.journey.remainingPlacesCar = this.journeyForm.value.placesCar;
+      this.journey.price = this.journeyForm.value.price;
+      console.debug('journey', this.journey);
+    }
+
+  }
+
   selectPlace(place, type){
 
     this.startPlaces = [];
 
-    let location = {
-      lat: null,
-      lng: null,
-      name: place.name
-    };
-
-    if(type == "start") {
-      if(this.startJourneyMarker) {
-        this.startJourneyMarker.setMap(null);
-      }
-    } else {
-      if(this.endJourneyMarker) {
-        this.endJourneyMarker.setMap(null);
-      }
-    }
-
     this.places.getPlaceDetails(place).then((details) => {
       console.debug(details);
-      this.zone.run(() => {
-
-        location.name = details.name;
-        location.lat = details.geometry.location.lat();
-        location.lng = details.geometry.location.lng();
-
-        this.maps.map.setCenter({lat: location.lat, lng: location.lng});
-
-        if(type == "start") {
-          this.startJourneyMarker = new google.maps.Marker({
-            map: this.maps.map,
-            position: location
-          });
-        } else {
-          this.endJourneyMarker = new google.maps.Marker({
-            map: this.maps.map,
-            position: location
-          });
-        }
-        this.location = location;
-      });
 
       if(type == "start") {
-        this.startQuery = details.formatted_address;
+        this.journeyForm.patchValue({
+          startQuery: details.formatted_address
+        });
         this.startPlaces = [];
         this.setPlace(details, 'start');
       } else {
-        this.endQuery = details.formatted_address;
+        this.journeyForm.patchValue({
+          endQuery: details.formatted_address
+        });
         this.endPlaces = [];
         this.setPlace(details, 'end');
       }
@@ -141,9 +136,12 @@ export class CreateJourneyPage {
         console.debug('predictions', predictions);
         if(type == "start") {
           this.startPlaces = [];
+          this.journey.startPlace = null;
         } else {
           this.endPlaces = [];
+          this.journey.endPlace = null;
         }
+        console.debug('journey', this.journey);
         if(predictions) {
           predictions.forEach((prediction) => {
             if(type == "start") {
@@ -152,16 +150,6 @@ export class CreateJourneyPage {
               this.endPlaces.push(prediction);
             }
           });
-        } else {
-          if(type == "start") {
-            if(this.startJourneyMarker) {
-              this.startJourneyMarker.setMap(null);
-            }
-          } else {
-            if(this.endJourneyMarker) {
-              this.endJourneyMarker.setMap(null);
-            }
-          }
         }
       });
     } else {
@@ -173,15 +161,15 @@ export class CreateJourneyPage {
     }
   }
 
-  setPlace(detailPlace, typePlace) {
+  private setPlace(detailPlace, typePlace) {
     if(detailPlace.address_components) {
       if(typePlace == 'start') {
-        this.startJourneyPlace = {
+        this.journey.startPlace = {
           city: "",
           country: ""
         };
       } else {
-        this.endJourneyPlace = {
+        this.journey.endPlace = {
           city: "",
           country: ""
         };
@@ -193,57 +181,57 @@ export class CreateJourneyPage {
             switch (type) {
               case STREET_NUMBER_DETAILS: {
                 if(typePlace == 'start') {
-                  this.startJourneyPlace.streetNumber = component.long_name;
+                  this.journey.startPlace.streetNumber = component.long_name;
                 } else {
-                  this.endJourneyPlace.streetNumber = component.long_name;
+                  this.journey.endPlace.streetNumber = component.long_name;
                 }
                 break;
               }
               case STREET_DETAILS: {
                 if(typePlace == 'start') {
-                  this.startJourneyPlace.street = component.long_name;
+                  this.journey.startPlace.street = component.long_name;
                 } else {
-                  this.endJourneyPlace.street = component.long_name;
+                  this.journey.endPlace.street = component.long_name;
                 }
                 break;
               }
               case COUNTY_DETAILS: {
                 if(typePlace == 'start') {
-                  this.startJourneyPlace.county = component.long_name;
+                  this.journey.startPlace.county = component.long_name;
                 } else {
-                  this.endJourneyPlace.county = component.long_name;
+                  this.journey.endPlace.county = component.long_name;
                 }
                 break;
               }
               case REGION_DETAILS: {
                 if(typePlace == 'start') {
-                  this.startJourneyPlace.region = component.long_name;
+                  this.journey.startPlace.region = component.long_name;
                 } else {
-                  this.endJourneyPlace.region = component.long_name;
+                  this.journey.endPlace.region = component.long_name;
                 }
                 break;
               }
               case CITY_DETAILS: {
                 if(typePlace == 'start') {
-                  this.startJourneyPlace.city = component.long_name;
+                  this.journey.startPlace.city = component.long_name;
                 } else {
-                  this.endJourneyPlace.city = component.long_name;
+                  this.journey.endPlace.city = component.long_name;
                 }
                 break;
               }
               case COUNTRY_DETAILS: {
                 if(typePlace == 'start') {
-                  this.startJourneyPlace.country = component.long_name;
+                  this.journey.startPlace.country = component.long_name;
                 } else {
-                  this.endJourneyPlace.country = component.long_name;
+                  this.journey.endPlace.country = component.long_name;
                 }
                 break;
               }
               case POSTAL_CODE_DETAILS: {
                 if(typePlace == 'start') {
-                  this.startJourneyPlace.postalCode = component.long_name;
+                  this.journey.startPlace.postalCode = component.long_name;
                 } else {
-                  this.endJourneyPlace.postalCode = component.long_name;
+                  this.journey.endPlace.postalCode = component.long_name;
                 }
                 break;
               }
@@ -253,7 +241,6 @@ export class CreateJourneyPage {
         }
       })
     }
-    console.debug('startPlace', this.startJourneyPlace);
-    console.debug('endPlace', this.endJourneyPlace);
+    console.debug('journey', this.journey);
   }
 }

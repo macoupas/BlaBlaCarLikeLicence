@@ -1,32 +1,32 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
-import { LoginPage } from '../pages/login/login';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import {BrowserModule} from '@angular/platform-browser';
+import {ErrorHandler, NgModule} from '@angular/core';
+import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
+import {MyApp} from './app.component';
+import {HomePage} from '../pages/home/home';
+import {ListPage} from '../pages/list/list';
+import {LoginPage} from '../pages/login/login';
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
 import {ProfilePage} from "../pages/profile/profile";
-import { StorageProvider } from '../providers/storage/storage';
+import {StorageProvider} from '../providers/storage/storage';
 import {IonicStorageModule} from "@ionic/storage";
 import {CreationProfilePage} from "../pages/creationProfile/creationProfile";
-import { AngularFirestoreModule} from "angularfire2/firestore";
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AuthProvider } from '../providers/auth/auth';
+import {AngularFirestoreModule} from "angularfire2/firestore";
+import {AngularFireModule} from 'angularfire2';
+import {AngularFireAuthModule} from 'angularfire2/auth';
+import {AuthProvider} from '../providers/auth/auth';
 import {FirestoreStorageProvider} from "../providers/firestore-storage/firestore-storage";
-import { PlaceProvider } from '../providers/place/place';
-import { ConnectionProvider } from '../providers/connection/connection';
-import { GoogleMapsProvider } from '../providers/google-maps/google-maps';
+import {PlaceProvider} from '../providers/place/place';
+import {ConnectionProvider} from '../providers/connection/connection';
+import {GoogleMapsProvider} from '../providers/google-maps/google-maps';
 import {SearchJourneyPage} from "../pages/search-journey/search-journey";
 import {Network} from "@ionic-native/network";
-import { Geolocation } from '@ionic-native/geolocation';
+import {Geolocation} from '@ionic-native/geolocation';
 import {CreateJourneyPage} from "../pages/create-journey/create-journey";
-import { ProfilPage } from '../pages/profil/profil';
-import { VoituresPage } from '../pages/voitures/voitures';
-import {CommentairesPage } from '../pages/commentaires/commentaires';
-import {HistoriquePage } from '../pages/historique/historique';
+import {ProfilPage} from '../pages/profil/profil';
+import {VoituresPage} from '../pages/voitures/voitures';
+import {CommentairesPage} from '../pages/commentaires/commentaires';
+import {HistoriquePage} from '../pages/historique/historique';
 
 export const firestoreConfig = {
   apiKey: "AIzaSyAkfcjbz2_uhX3dPY_k6lXysc25PY-z8YE",
@@ -47,12 +47,12 @@ export const placeConfig = {
     HomePage,
     ListPage,
     LoginPage,
-	  ProfilePage,
+    ProfilePage,
     CreationProfilePage,
     SearchJourneyPage,
     CreateJourneyPage,
- 	ProfilPage,
-	VoituresPage,
+    ProfilPage,
+    VoituresPage,
     CommentairesPage,
     HistoriquePage
   ],
@@ -66,19 +66,19 @@ export const placeConfig = {
     AngularFireModule.initializeApp(firestoreConfig),
     AngularFireAuthModule,
     AngularFirestoreModule
-],
+  ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
     ListPage,
     LoginPage,
-	  ProfilePage,
+    ProfilePage,
     CreationProfilePage,
     SearchJourneyPage,
     CreateJourneyPage,
-	ProfilPage,
-	VoituresPage,
+    ProfilPage,
+    VoituresPage,
     CommentairesPage,
     HistoriquePage
   ],
@@ -96,4 +96,5 @@ export const placeConfig = {
     Geolocation,
   ]
 })
-export class AppModule {}
+export class AppModule {
+}
