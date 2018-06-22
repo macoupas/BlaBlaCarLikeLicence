@@ -9,10 +9,8 @@ import {
   STREET_NUMBER_DETAILS
 } from "../../models/place.model";
 import * as firebase from "firebase";
-import Timestamp = firebase.firestore.Timestamp;
 import * as moment from "moment";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import Timestamp = firebase.firestore.Timestamp;
 import Timestamp = firebase.firestore.Timestamp;
 import {AuthProvider} from "../../providers/auth/auth";
 
@@ -36,15 +34,11 @@ export class CreateJourneyPage {
   @ViewChild('pleaseConnect') pleaseConnect: ElementRef;
 
   private placesSelect = [];
+  errorMessages = [];
 
-  startQuery: string = '';
-  endQuery: string = '';
   startPlaces: any = [];
   endPlaces: any = [];
   searchDisabled: boolean;
-
-  startDate: string;
-  startTime: string;
 
   private journeyForm: FormGroup;
 
@@ -67,8 +61,8 @@ export class CreateJourneyPage {
     }
 
     this.journeyForm = this.fb.group({
-      startQuery: [''],
-      endQuery: [''],
+      startQuery: ['', Validators.required],
+      endQuery: ['', Validators.required],
       startDate: [''],
       startTime: [''],
       placesCar: [0, Validators.min(1)],
@@ -89,13 +83,9 @@ export class CreateJourneyPage {
   }
 
   createJourney() {
-    console.debug('heure', this.startTime);
-    console.debug('date', this.startDate);
-    let date = moment(this.journeyForm.value.startDate + " " + this.journeyForm.value.startTime).format();
-    let timestamp = moment(date);
-    console.debug('date', date);
-    console.debug('timestamp', timestamp);
-    if(this.journeyForm.valid) {
+
+    if(this.formIsValid()) {
+      let date = moment(this.journeyForm.value.startDate + " " + this.journeyForm.value.startTime).format();
       this.journey.uid = this.fs.createId();
       this.journey.startDate = Timestamp.fromDate(new Date(date));
       this.journey.driverId = this.auth.userConnected.uid;
@@ -242,5 +232,33 @@ export class CreateJourneyPage {
       })
     }
     console.debug('journey', this.journey);
+  }
+
+  private formIsValid() {
+    if(!this.journeyForm.valid.valueOf()) {
+      this.errorMessages = [];
+      if(this.journeyForm.controls.startQuery.invalid) {
+        this.errorMessages.push("Veuillez renseigner l'adresse de départ") ;
+      }
+      if(this.journeyForm.controls.endQuery.invalid) {
+        this.errorMessages.push("Veuillez renseigner l'adresse d'arrivée");
+      }
+      if(this.journeyForm.controls.startDate.invalid) {
+        this.errorMessages.push("Veuillez renseigner la date du départ");
+      }
+      if(this.journeyForm.controls.startTime.invalid) {
+        this.errorMessages.push("Veuillez renseigner l'heure du départ");
+      }
+      if(this.journeyForm.controls.placesCar.invalid) {
+        this.errorMessages.push("Veuillez renseigner un nombre de places supérieur à 0");
+      }
+      if(this.journeyForm.controls.price.invalid) {
+        this.errorMessages.push("Veuillez renseigner un prix supérieur à 0");
+      }
+      return false;
+    }
+
+    this.errorMessages = [];
+    return true;
   }
 }
