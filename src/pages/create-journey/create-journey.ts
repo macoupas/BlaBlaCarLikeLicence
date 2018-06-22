@@ -93,6 +93,11 @@ export class CreateJourneyPage {
       this.journey.remainingPlacesCar = this.journeyForm.value.placesCar;
       this.journey.price = this.journeyForm.value.price;
       console.debug('journey', this.journey);
+      this.fs.addJourney(this.journey).then(journey => {
+        console.debug('Add journey success');
+      }).catch(error => {
+        console.error(error);
+      })
     }
 
   }
