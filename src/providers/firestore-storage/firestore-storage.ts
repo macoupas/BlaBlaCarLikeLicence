@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {AngularFirestore} from "angularfire2/firestore";
 import {USER_PATH, User} from "../../models/user.model";
 import {Journey, JOURNEY_PATH} from "../../models/journey.model";
+import {Filter} from "../../models/filter.model";
+import * as firebase from "firebase";
 
 /*
   Generated class for the FirestoreStorageProvider provider.
@@ -12,7 +14,10 @@ import {Journey, JOURNEY_PATH} from "../../models/journey.model";
 @Injectable()
 export class FirestoreStorageProvider {
 
+  private db;
+
   constructor(private afs: AngularFirestore) {
+    this.db = firebase.firestore();
   }
 
   createId() {
@@ -21,7 +26,7 @@ export class FirestoreStorageProvider {
 
   getUser(userId: string) {
     return new Promise((resolve, reject) => {
-      this.afs.collection(USER_PATH).doc(userId).ref.get().then(result => {
+      this.db.collection(USER_PATH).doc(userId).get().then(result => {
         let user = result.data();
         if (user != undefined) {
           resolve(user);
@@ -35,11 +40,22 @@ export class FirestoreStorageProvider {
   }
 
   addUser(user: User) {
-    return this.afs.collection(USER_PATH).doc(user.uid).set(user);
+    return this.db.collection(USER_PATH).doc(user.uid).set(user);
   }
 
   addJourney(journey: Journey) {
-    return this.afs.collection(JOURNEY_PATH).doc(journey.uid).set(journey);
+    console.debug('Journey for adding', journey);
+    journey.price = Number(journey.price);
+    journey.placesCar = Number(journey.placesCar);
+    journey.remainingPlacesCar = Number(journey.remainingPlacesCar);
+    return this.db.collection(JOURNEY_PATH).doc(journey.uid).set(journey);
   }
 
+  getJourneysWithFilters(filters: Array<Filter>) {
+    let journeyRef = this.db.collection(JOURNEY_PATH);
+    let queryJourney = journeyRef.where(filters[0].field, filters[0].operator, filters[0].value);
+    filters.forEach(filter => {
+
+    });
+  }
 }

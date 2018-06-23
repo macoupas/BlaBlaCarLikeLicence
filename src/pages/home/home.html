@@ -10,38 +10,10 @@
 </ion-header>
 
 <ion-content padding>
-  <button ion-button (click)="searchJourney()">Trouver un trajet</button>
-  <button ion-button (click)="createJourney()">Proposer un trajet</button>
   <div col-12>
-    <h1 col-12 col-sm-8 class="text-center">La plus grande communauté de covoiturage</h1>
-    <div col-12>
-      <ion-grid>
-        <ion-row>
-          <h2> Trouver un trajet </h2>
-        </ion-row>
-        <ion-row>
-          <ion-col col-12 col-sm-6 col-lg>
-            <div class="input-group">
-              <label>De : </label>
-              <input type="text"/>
-            </div>
-          </ion-col>
-          <ion-col col-12 col-sm-6 col-lg>
-            <div class="input-group">
-              <label>A : </label>
-              <input type="text"/>
-            </div>
-          </ion-col>
-          <ion-col col-12 col-sm-6 col-lg>
-            <div class="input-group">
-              <label>Le : </label>
-              <input type="date"/>
-            </div>
-          </ion-col>
-
-        </ion-row>
-      </ion-grid>
-    </div>
+    <h1 col-12 col-sm-8 class="text-center titre-home">La plus grande communauté de covoiturage</h1>
+    <button ion-button col-12 (click)="searchJourney()">Trouver un trajet</button>
+    <button ion-button col-12 (click)="createJourney()">Proposer un trajet</button>
   </div>
 
 </ion-content>

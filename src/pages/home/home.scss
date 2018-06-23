@@ -11,39 +11,10 @@ page-home > ion-content > div > div {
 .titre-home {
   color: snow;
   font-weight: bold;
-  display: flex;
   margin: 20px 0;
 }
 
 .text-center {
   text-align: center;
-}
-
-.input-group {
-  margin: 10px;
-}
-
-.input-group > input {
-  margin: 5px;
-  border-radius: 5px;
-  border: gray solid 1px;
-  padding: 10px;
-  width: 80%;
-}
-
-.input-group > label {
-  margin: 15px;
-  width: 20%;
-  text-align: right;
-}
-
-@media screen and (max-width: 576px){
-  .input-group {
-    margin: 0;
-    width: 100% !important;
-  }
-  .input-group > label {
-    margin: 10px 10px 10px 0;
-  }
 }
 
