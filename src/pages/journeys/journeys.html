@@ -16,6 +16,27 @@
 
 <ion-content padding>
 <div *ngFor="let journey of journeys">
-  {{journey.startPlace.city}} - {{journey.endPlace.city}} ( {{journey.driver.username}} )
+  <ion-card>
+    <ion-item>
+      <ion-avatar item-start>
+        <img src="{{journey.driver.photoUrl}}">
+      </ion-avatar>
+      <h2>{{journey.driver.username}}</h2>
+      <p> {{journey.driver.age}} ans</p>
+    </ion-item>
+    <ion-row>
+      <ion-col col-9 padding>
+        <ion-row>
+          {{journey.startDate}}
+        </ion-row>
+        <ion-row class="mrg15T">
+          {{journey.startPlace.city}} -> {{journey.endPlace.city}}
+        </ion-row>
+      </ion-col>
+      <ion-col center text-center col-3 padding class="fontSize20 fontBold">
+        {{journey.price}} €
+      </ion-col>
+    </ion-row>
+  </ion-card>
 </div>
 </ion-content>

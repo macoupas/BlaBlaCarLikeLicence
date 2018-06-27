@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {Journey} from "../../models/journey.model";
+import * as moment from "moment";
 
 /**
  * Generated class for the JourneysPage page.
@@ -28,8 +29,12 @@ export class JourneysPage {
 
     this.journeysParams.forEach(journey => {
       let journeyTmp : any = journey;
-      journey.driver.get().then(user => {
-        journeyTmp.driver = user.data();
+      journey.driver.get().then(userSnapshot => {
+        let user = userSnapshot.data();
+        console.debug('user', user);
+        let startDate = moment.unix(journey.startDate.seconds).format("DD MMM YYYY à HH:mm");
+        journeyTmp.driver = user;
+        journeyTmp.startDate = startDate;
         this.journeys.push(journeyTmp);
       });
     });
