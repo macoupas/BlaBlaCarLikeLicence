@@ -39,6 +39,21 @@ export class FirestoreStorageProvider {
     });
   }
 
+  getDocument(collectionName: string, idDoc: string) {
+    return new Promise((resolve, reject) => {
+      this.db.collection(collectionName).doc(idDoc).get().then(result => {
+        let doc = result.data();
+        if (doc != undefined) {
+          resolve(doc);
+        } else {
+          resolve(null);
+        }
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
   addUser(user: User) {
     return this.db.collection(USER_PATH).doc(user.uid).set(user);
   }
@@ -51,11 +66,25 @@ export class FirestoreStorageProvider {
     return this.db.collection(JOURNEY_PATH).doc(journey.uid).set(journey);
   }
 
-  getJourneysWithFilters(filters: Array<Filter>) {
-    let journeyRef = this.db.collection(JOURNEY_PATH);
-    let queryJourney = journeyRef.where(filters[0].field, filters[0].operator, filters[0].value);
-    filters.forEach(filter => {
-
+  getDocuments(collectionName: string, filters: Array<Filter>): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let query = this.db.collection(collectionName);
+      filters.forEach(filter => query = query.where(filter.field, filter.operator, filter.value));
+      query.get()
+        .then((querySnapshot) => {
+          let results = [];
+          querySnapshot.forEach(function (doc) {
+            let obj = JSON.parse(JSON.stringify(doc.data()));
+            results.push(obj);
+          });
+          if (results.length > 0) {
+            resolve(results);
+          } else {
+            console.error("No document");
+            resolve(null);
+          }
+        })
+        .catch((error: any) => reject(error));
     });
   }
 }

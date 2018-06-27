@@ -4,6 +4,13 @@ import { Geolocation } from '@ionic-native/geolocation';
 import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
 import {} from '@types/googlemaps';
 import {PlaceProvider} from "../../providers/place/place";
+import * as moment from "moment";
+import * as firebase from "firebase";
+import Timestamp = firebase.firestore.Timestamp;
+import {Place} from "../../models/place.model";
+import {Filter} from "../../models/filter.model";
+import {FirestoreStorageProvider} from "../../providers/firestore-storage/firestore-storage";
+import {JOURNEY_PATH} from "../../models/journey.model";
 
 /**
  * Generated class for the SearchJourneyPage page.
@@ -22,10 +29,20 @@ export class SearchJourneyPage {
   @ViewChild('map') mapElement: ElementRef;
   @ViewChild('pleaseConnect') pleaseConnect: ElementRef;
 
+  minDate: string;
+  maxDate: string;
+
   latitude: number;
   longitude: number;
+
   startQuery: string = '';
   endQuery: string = '';
+
+  startJourneyPlace: Place;
+  endJourneyPlace: Place;
+  startDate: string;
+  startTime: string;
+
   startPlaces: any = [];
   endPlaces: any = [];
   searchDisabled: boolean;
@@ -33,8 +50,9 @@ export class SearchJourneyPage {
   startJourneyMarker;
   endJourneyMarker;
 
+
   constructor(public navCtrl: NavController, public zone: NgZone, public maps: GoogleMapsProvider,
-              public platform: Platform, public geolocation: Geolocation,
+              public platform: Platform, public geolocation: Geolocation, private fs: FirestoreStorageProvider,
               public viewCtrl: ViewController, public places: PlaceProvider) {
     this.searchDisabled = true;
   }
@@ -49,6 +67,30 @@ export class SearchJourneyPage {
 
     });
 
+    this.minDate = moment().format('YYYY-MM-DD');
+    this.maxDate = moment().add(1, 'year').format('YYYY');
+
+  }
+
+  searchJourney() {
+    if(this.startJourneyPlace == null || this.endJourneyPlace == null) {
+      console.error('Start place and End place undefined');
+    } else {
+      let queryFilters: Array<Filter> = [];
+      queryFilters.push({field: "startPlace.city", operator: "==", value: this.startJourneyPlace.city});
+      if(!this.startDate) {
+        this.startDate = this.minDate;
+        if(!this.startTime) {
+          this.startTime = '00:00';
+        }
+      }
+      let date = moment(this.startDate + " " + this.startTime).format();
+      let timestamp = Timestamp.fromMillis(parseInt(moment(date).format('x')));
+      queryFilters.push({field: "startDate", operator: ">=", value: timestamp});
+      this.fs.getDocuments(JOURNEY_PATH,queryFilters).then(journeys => {
+        console.debug('journeys', journeys);
+      });
+    }
   }
 
   selectPlace(place, type){
@@ -72,7 +114,6 @@ export class SearchJourneyPage {
     }
 
     this.places.getPlaceDetails(place).then((details) => {
-      console.debug(details);
       this.zone.run(() => {
 
         location.name = details.name;
@@ -82,11 +123,13 @@ export class SearchJourneyPage {
         this.maps.map.setCenter({lat: location.lat, lng: location.lng});
 
         if(type == "start") {
+          this.startJourneyPlace = this.places.setPlace(details);
           this.startJourneyMarker = new google.maps.Marker({
             map: this.maps.map,
             position: location
           });
         } else {
+          this.endJourneyPlace = this.places.setPlace(details);
           this.endJourneyMarker = new google.maps.Marker({
             map: this.maps.map,
             position: location

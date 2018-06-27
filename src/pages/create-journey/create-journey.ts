@@ -40,6 +40,9 @@ export class CreateJourneyPage {
   endPlaces: any = [];
   searchDisabled: boolean;
 
+  minDate: string;
+  maxDate: string;
+
   private journeyForm: FormGroup;
 
   journey: Journey = {
@@ -56,7 +59,7 @@ export class CreateJourneyPage {
   constructor(public maps: GoogleMapsProvider, public places: PlaceProvider, private fb: FormBuilder,
               public fs: FirestoreStorageProvider, private auth: AuthProvider) {
     this.searchDisabled = true;
-    for(let i=1;i<=NB_PLACES_MAX; i++) {
+    for (let i = 1; i <= NB_PLACES_MAX; i++) {
       this.placesSelect.push(i);
     }
 
@@ -80,14 +83,17 @@ export class CreateJourneyPage {
 
     });
 
+    this.minDate = moment().format('YYYY-MM-DD');
+    this.maxDate = moment().add(1, 'year').format('YYYY');
+
   }
 
   createJourney() {
 
-    if(this.formIsValid()) {
+    if (this.formIsValid()) {
       let date = moment(this.journeyForm.value.startDate + " " + this.journeyForm.value.startTime).format();
       this.journey.uid = this.fs.createId();
-      this.journey.startDate = Timestamp.fromDate(new Date(date));
+      this.journey.startDate = Timestamp.fromMillis(parseInt(moment(date).format('x')));
       this.journey.driverId = this.auth.userConnected.uid;
       this.journey.placesCar = this.journeyForm.value.placesCar;
       this.journey.remainingPlacesCar = this.journeyForm.value.placesCar;
@@ -102,14 +108,14 @@ export class CreateJourneyPage {
 
   }
 
-  selectPlace(place, type){
+  selectPlace(place, type) {
 
     this.startPlaces = [];
 
     this.places.getPlaceDetails(place).then((details) => {
       console.debug(details);
 
-      if(type == "start") {
+      if (type == "start") {
         this.journeyForm.patchValue({
           startQuery: details.formatted_address
         });
@@ -125,11 +131,11 @@ export class CreateJourneyPage {
     });
   }
 
-  searchPlaces(query: string, type: string){
-    if(!this.searchDisabled) {
+  searchPlaces(query: string, type: string) {
+    if (!this.searchDisabled) {
       this.places.getPlacePredictions(query).then((predictions) => {
         console.debug('predictions', predictions);
-        if(type == "start") {
+        if (type == "start") {
           this.startPlaces = [];
           this.journey.startPlace = null;
         } else {
@@ -137,9 +143,9 @@ export class CreateJourneyPage {
           this.journey.endPlace = null;
         }
         console.debug('journey', this.journey);
-        if(predictions) {
+        if (predictions) {
           predictions.forEach((prediction) => {
-            if(type == "start") {
+            if (type == "start") {
               this.startPlaces.push(prediction);
             } else {
               this.endPlaces.push(prediction);
@@ -148,7 +154,7 @@ export class CreateJourneyPage {
         }
       });
     } else {
-      if(type == "start") {
+      if (type == "start") {
         this.startPlaces = [];
       } else {
         this.endPlaces = [];
@@ -157,107 +163,33 @@ export class CreateJourneyPage {
   }
 
   private setPlace(detailPlace, typePlace) {
-    if(detailPlace.address_components) {
-      if(typePlace == 'start') {
-        this.journey.startPlace = {
-          city: "",
-          country: ""
-        };
-      } else {
-        this.journey.endPlace = {
-          city: "",
-          country: ""
-        };
-      }
-
-      detailPlace.address_components.forEach(component => {
-        if(component.types) {
-          component.types.forEach(type => {
-            switch (type) {
-              case STREET_NUMBER_DETAILS: {
-                if(typePlace == 'start') {
-                  this.journey.startPlace.streetNumber = component.long_name;
-                } else {
-                  this.journey.endPlace.streetNumber = component.long_name;
-                }
-                break;
-              }
-              case STREET_DETAILS: {
-                if(typePlace == 'start') {
-                  this.journey.startPlace.street = component.long_name;
-                } else {
-                  this.journey.endPlace.street = component.long_name;
-                }
-                break;
-              }
-              case COUNTY_DETAILS: {
-                if(typePlace == 'start') {
-                  this.journey.startPlace.county = component.long_name;
-                } else {
-                  this.journey.endPlace.county = component.long_name;
-                }
-                break;
-              }
-              case REGION_DETAILS: {
-                if(typePlace == 'start') {
-                  this.journey.startPlace.region = component.long_name;
-                } else {
-                  this.journey.endPlace.region = component.long_name;
-                }
-                break;
-              }
-              case CITY_DETAILS: {
-                if(typePlace == 'start') {
-                  this.journey.startPlace.city = component.long_name;
-                } else {
-                  this.journey.endPlace.city = component.long_name;
-                }
-                break;
-              }
-              case COUNTRY_DETAILS: {
-                if(typePlace == 'start') {
-                  this.journey.startPlace.country = component.long_name;
-                } else {
-                  this.journey.endPlace.country = component.long_name;
-                }
-                break;
-              }
-              case POSTAL_CODE_DETAILS: {
-                if(typePlace == 'start') {
-                  this.journey.startPlace.postalCode = component.long_name;
-                } else {
-                  this.journey.endPlace.postalCode = component.long_name;
-                }
-                break;
-              }
-              default: break;
-            }
-          })
-        }
-      })
+    if (typePlace == 'start') {
+      this.journey.startPlace = this.places.setPlace(detailPlace);
+    } else {
+      this.journey.endPlace = this.places.setPlace(detailPlace);
     }
     console.debug('journey', this.journey);
   }
 
   private formIsValid() {
-    if(!this.journeyForm.valid.valueOf()) {
+    if (!this.journeyForm.valid.valueOf()) {
       this.errorMessages = [];
-      if(this.journeyForm.controls.startQuery.invalid) {
-        this.errorMessages.push("Veuillez renseigner l'adresse de départ") ;
+      if (this.journeyForm.controls.startQuery.invalid) {
+        this.errorMessages.push("Veuillez renseigner l'adresse de départ");
       }
-      if(this.journeyForm.controls.endQuery.invalid) {
+      if (this.journeyForm.controls.endQuery.invalid) {
         this.errorMessages.push("Veuillez renseigner l'adresse d'arrivée");
       }
-      if(this.journeyForm.controls.startDate.invalid) {
+      if (this.journeyForm.controls.startDate.invalid) {
         this.errorMessages.push("Veuillez renseigner la date du départ");
       }
-      if(this.journeyForm.controls.startTime.invalid) {
+      if (this.journeyForm.controls.startTime.invalid) {
         this.errorMessages.push("Veuillez renseigner l'heure du départ");
       }
-      if(this.journeyForm.controls.placesCar.invalid) {
+      if (this.journeyForm.controls.placesCar.invalid) {
         this.errorMessages.push("Veuillez renseigner un nombre de places supérieur à 0");
       }
-      if(this.journeyForm.controls.price.invalid) {
+      if (this.journeyForm.controls.price.invalid) {
         this.errorMessages.push("Veuillez renseigner un prix supérieur à 0");
       }
       return false;

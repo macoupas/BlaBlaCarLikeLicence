@@ -58,14 +58,20 @@ export const placeConfig = {
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot({
       name: 'blablacarDb',
       driverOrder: ['indexeddb', 'sqlite', 'websql']
     }),
     AngularFireModule.initializeApp(firestoreConfig),
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    IonicModule.forRoot(MyApp, {
+      monthNames: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre',
+                    'octobre', 'novembre', 'décembre'],
+      monthShortNames: ['jan', 'fev', 'mar', 'avr', 'mai', 'juin', 'juil', 'aou', 'sep', 'oct', 'nov', 'dec' ],
+      dayNames: ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche' ],
+      dayShortNames: ['lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim' ],
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [

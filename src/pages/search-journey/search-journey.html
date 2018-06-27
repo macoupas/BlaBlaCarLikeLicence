@@ -29,6 +29,22 @@
             <ion-item *ngFor="let place of endPlaces" (click)="selectPlace(place, 'dest')">{{place.description}}</ion-item>
           </ion-list>
         </ion-col>
+        <ion-col no-padding col-12>
+          <ion-item>
+            <ion-label>Date</ion-label>
+            <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" min="{{minDate}}" max="{{maxDate}}"
+                          [(ngModel)]="startDate" monthShortNames="jan, fev, mar, avr, mai, juin, juil, aou, sep, oct, nov, dec"></ion-datetime>
+          </ion-item>
+        </ion-col>
+        <ion-col no-padding col-12>
+          <ion-item>
+            <ion-label>Départ après</ion-label>
+            <ion-datetime displayFormat="HH:00" pickerFormat="HH" [(ngModel)]="startTime"></ion-datetime>
+          </ion-item>
+        </ion-col>
+        <ion-col no-padding col-12>
+          <button col-12 ion-button round (click)="searchJourney()" class="mrg20T"> Chercher le trajet </button>
+        </ion-col>
       </ion-row>
       <ion-row>
         <div #pleaseConnect id="please-connect">
