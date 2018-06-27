@@ -4,6 +4,7 @@ import {USER_PATH, User} from "../../models/user.model";
 import {Journey, JOURNEY_PATH} from "../../models/journey.model";
 import {Filter} from "../../models/filter.model";
 import * as firebase from "firebase";
+import DocumentReference = firebase.firestore.DocumentReference;
 
 /*
   Generated class for the FirestoreStorageProvider provider.
@@ -37,6 +38,10 @@ export class FirestoreStorageProvider {
         reject(error);
       });
     });
+  }
+
+  getDocumentReference(collectionName: string, idDoc: string) : DocumentReference{
+    return this.db.collection(collectionName).doc(idDoc);
   }
 
   getDocument(collectionName: string, idDoc: string) {
@@ -74,8 +79,7 @@ export class FirestoreStorageProvider {
         .then((querySnapshot) => {
           let results = [];
           querySnapshot.forEach(function (doc) {
-            let obj = JSON.parse(JSON.stringify(doc.data()));
-            results.push(obj);
+            results.push(doc.data());
           });
           if (results.length > 0) {
             resolve(results);

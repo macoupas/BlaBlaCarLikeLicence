@@ -16,18 +16,26 @@ import {Journey} from "../../models/journey.model";
 })
 export class JourneysPage {
 
-  journeys : Array<Journey>;
+  journeysParams : Array<Journey>;
+  journeys: Array<any> = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     if(this.navParams.data.journeys) {
-      this.journeys = this.navParams.data.journeys;
+      this.journeysParams = this.navParams.data.journeys;
     } else {
-      this.journeys = [];
+      this.journeysParams = [];
     }
+
+    this.journeysParams.forEach(journey => {
+      let journeyTmp : any = journey;
+      journey.driver.get().then(user => {
+        journeyTmp.driver = user.data();
+        this.journeys.push(journeyTmp);
+      });
+    });
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad JourneysPage');
   }
 
 }

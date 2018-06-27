@@ -12,6 +12,8 @@ import {Filter} from "../../models/filter.model";
 import {FirestoreStorageProvider} from "../../providers/firestore-storage/firestore-storage";
 import {JOURNEY_PATH} from "../../models/journey.model";
 import {JourneysPage} from "../journeys/journeys";
+import {forEach} from "@angular/router/src/utils/collection";
+import {USER_PATH} from "../../models/user.model";
 
 /**
  * Generated class for the SearchJourneyPage page.

@@ -4,15 +4,13 @@ import {PlaceProvider} from "../../providers/place/place";
 import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
 import {Journey} from "../../models/journey.model";
 import {FirestoreStorageProvider} from "../../providers/firestore-storage/firestore-storage";
-import {
-  CITY_DETAILS, COUNTRY_DETAILS, COUNTY_DETAILS, Place, POSTAL_CODE_DETAILS, REGION_DETAILS, STREET_DETAILS,
-  STREET_NUMBER_DETAILS
-} from "../../models/place.model";
 import * as firebase from "firebase";
 import * as moment from "moment";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import Timestamp = firebase.firestore.Timestamp;
 import {AuthProvider} from "../../providers/auth/auth";
+import DocumentReference = firebase.firestore.DocumentReference;
+import {USER_PATH} from "../../models/user.model";
 
 /**
  * Generated class for the CreateJourneyPage page.
@@ -50,7 +48,7 @@ export class CreateJourneyPage {
     startPlace: null,
     endPlace: null,
     startDate: null,
-    driverId: "",
+    driver: this.fs.getDocumentReference(USER_PATH, this.auth.userConnected.uid),
     placesCar: 0,
     remainingPlacesCar: 0,
     price: 0
@@ -94,7 +92,6 @@ export class CreateJourneyPage {
       let date = moment(this.journeyForm.value.startDate + " " + this.journeyForm.value.startTime).format();
       this.journey.uid = this.fs.createId();
       this.journey.startDate = Timestamp.fromMillis(parseInt(moment(date).format('x')));
-      this.journey.driverId = this.auth.userConnected.uid;
       this.journey.placesCar = this.journeyForm.value.placesCar;
       this.journey.remainingPlacesCar = this.journeyForm.value.placesCar;
       this.journey.price = this.journeyForm.value.price;
