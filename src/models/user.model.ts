@@ -1,3 +1,4 @@
+import {Car} from "./car.model";
 export interface User {
   uid: string,
   username: string,
@@ -7,7 +8,7 @@ export interface User {
   mail: string,
   phone: string,
   age: Number,
-  cars,
+  cars: Car[],
   comments,
   journeys
 }

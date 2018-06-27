@@ -64,7 +64,7 @@ export class AuthProvider {
         let newUser = {
           uid: credential.user.uid,
           username: credential.user.displayName,
-          photoUrl: credential.user.photoURL ? credential.user.photoUrl : "https://lh3.googleusercontent.com/-B9i-RZi6N2k/AAAAAAAAAAI/AAAAAAAAAAA/UPUF_A8N9u8/photo.jpg",
+          photoUrl: credential.user.photoURL ? credential.user.photoURL : "https://lh3.googleusercontent.com/-B9i-RZi6N2k/AAAAAAAAAAI/AAAAAAAAAAA/UPUF_A8N9u8/photo.jpg",
           name: "",
           firstName: "",
           mail: credential.user.email,

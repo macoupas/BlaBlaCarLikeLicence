@@ -3,6 +3,9 @@ import { NavController, NavParams } from 'ionic-angular';
 import { VoituresPage } from '../voitures/voitures';
 import {CommentairesPage } from '../commentaires/commentaires';
 import {HistoriquePage } from '../historique/historique';
+import {User} from "../../models/user.model";
+import {Car} from "../../models/car.model";
+import {AuthProvider} from "../../providers/auth/auth";
 
 /**
  * Generated class for the ProfilPage page.
@@ -17,8 +20,23 @@ import {HistoriquePage } from '../historique/historique';
 })
 export class ProfilPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+    private user: User = {
+    uid: "",
+    username: "",
+    photoUrl: "",
+    name: "",
+    firstName: "",
+    mail: "",
+    phone: "",
+    age: 0,
+    cars: [],
+    comments: [],
+    journeys: []
+  };
+  
+  constructor(public navCtrl: NavController, public navParams: NavParams , private auth:AuthProvider) {
     this.navCtrl = navCtrl;
+    this.user = this.auth.userConnected;
 }
 
   ionViewDidLoad() {
