@@ -11,6 +11,7 @@ import {Place} from "../../models/place.model";
 import {Filter} from "../../models/filter.model";
 import {FirestoreStorageProvider} from "../../providers/firestore-storage/firestore-storage";
 import {JOURNEY_PATH} from "../../models/journey.model";
+import {JourneysPage} from "../journeys/journeys";
 
 /**
  * Generated class for the SearchJourneyPage page.
@@ -89,6 +90,9 @@ export class SearchJourneyPage {
       queryFilters.push({field: "startDate", operator: ">=", value: timestamp});
       this.fs.getDocuments(JOURNEY_PATH,queryFilters).then(journeys => {
         console.debug('journeys', journeys);
+        this.navCtrl.setRoot(JourneysPage, {journeys: journeys}).catch(error => {
+          console.error(error);
+        });
       });
     }
   }
