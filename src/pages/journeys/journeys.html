@@ -33,8 +33,13 @@
           {{journey.startPlace.city}} -> {{journey.endPlace.city}}
         </ion-row>
       </ion-col>
-      <ion-col center text-center col-3 padding class="fontSize20 fontBold">
-        {{journey.price}} €
+      <ion-col center text-center col-3 padding >
+        <ion-row class="fontSize20 fontBold">
+          {{journey.price}} €
+        </ion-row>
+        <ion-row class="mrg15T">
+          {{journey.remainingPlacesCar}} places
+        </ion-row>
       </ion-col>
     </ion-row>
   </ion-card>

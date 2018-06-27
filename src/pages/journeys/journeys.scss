@@ -1,4 +1,10 @@
+page-journeys > ion-content {
+  background: url('../../assets/imgs/background_preview.png') no-repeat center fixed;
+  background-size: cover;
+}
+
 page-journeys {
+
   .fontSize25 {
     font-size: 25px;
   }

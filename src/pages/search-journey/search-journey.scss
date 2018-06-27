@@ -1,10 +1,16 @@
+page-search-journey > ion-content {
+  background: url('../../assets/imgs/background_preview.png') no-repeat center fixed;
+  background-size: cover;
+}
+
 page-search-journey {
   ion-list {
     margin: 0 !important;
   }
 
   ion-searchbar {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    margin-top: 10px;
   }
 
   #please-connect {

@@ -81,6 +81,7 @@ export class SearchJourneyPage {
     } else {
       let queryFilters: Array<Filter> = [];
       queryFilters.push({field: "startPlace.city", operator: "==", value: this.startJourneyPlace.city});
+      queryFilters.push({field: "endPlace.city", operator: "==", value: this.endJourneyPlace.city});
       if(!this.startDate) {
         this.startDate = this.minDate;
         if(!this.startTime) {
