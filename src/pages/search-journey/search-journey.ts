@@ -12,8 +12,6 @@ import {Filter} from "../../models/filter.model";
 import {FirestoreStorageProvider} from "../../providers/firestore-storage/firestore-storage";
 import {JOURNEY_PATH} from "../../models/journey.model";
 import {JourneysPage} from "../journeys/journeys";
-import {forEach} from "@angular/router/src/utils/collection";
-import {USER_PATH} from "../../models/user.model";
 
 /**
  * Generated class for the SearchJourneyPage page.
@@ -92,6 +90,13 @@ export class SearchJourneyPage {
       let timestamp = Timestamp.fromMillis(parseInt(moment(date).format('x')));
       queryFilters.push({field: "startDate", operator: ">=", value: timestamp});
       this.fs.getDocuments(JOURNEY_PATH,queryFilters).then(journeys => {
+        if(journeys) {
+          journeys.forEach(journey => {
+            if(journey.remainingPlacesCar <= 0) {
+              journeys.splice(journeys.indexOf(journey), 1);
+            }
+          });
+        }
         console.debug('journeys', journeys);
         this.navCtrl.setRoot(JourneysPage, {journeys: journeys}).catch(error => {
           console.error(error);

@@ -1,3 +1,16 @@
+page-journey-detail > ion-content {
+  background: url('../../assets/imgs/background_preview.png') no-repeat center fixed;
+  background-size: cover;
+}
+
 page-journey-detail {
+
+  .place {
+    font-size: 20px;
+  }
+
+  .place.active {
+    font-weight: bold;
+  }
 
 }

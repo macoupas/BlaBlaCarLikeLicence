@@ -5,14 +5,126 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>journeyDetail</ion-title>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Détail du trajet</ion-title>
   </ion-navbar>
-
+  <ion-toolbar color="primary">
+    <ion-grid class="text-center">
+      <ion-row>
+        <ion-title class="fontWhite fontBold text-center"> {{journey.startPlace.city}} -> {{journey.endPlace.city}}
+        </ion-title>
+      </ion-row>
+      <ion-row>
+        <p col-12 no-margin class="fontWhite fontBold"> {{journey.startDate}}</p>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
 </ion-header>
 
 
 <ion-content padding>
+  <ion-card>
+    <ion-title class="mrg20T fontBold">Itinéraire</ion-title>
+    <ion-row>
+      <ion-item (click)="toogleStartPlace()">
+        <ion-grid>
+          <ion-row class="place" [ngClass]="{'active': isStartPlaceDetailShown}">
+            <ion-col col-10>
+              De : {{journey.startPlace.city}}
+            </ion-col>
+            <ion-col col-2 text-right>
+              <ion-icon name="ios-arrow-down" *ngIf="!isStartPlaceDetailShown"></ion-icon>
+              <ion-icon name="ios-arrow-up" *ngIf="isStartPlaceDetailShown"></ion-icon>
+            </ion-col>
+          </ion-row>
+          <div *ngIf="isStartPlaceDetailShown">
+            <ion-grid>
+              <ion-row><b>N° de rue :</b> {{journey.startPlace.streetNumber ? journey.startPlace.streetNumber : "Non
+                renseigné"}}
+              </ion-row>
+              <ion-row><b>Rue :</b> {{journey.startPlace.street ? journey.startPlace.street : "Non renseignée"}}
+              </ion-row>
+              <ion-row><b>Ville :</b> {{journey.startPlace.city ? journey.startPlace.city : "Non renseignée"}}</ion-row>
+              <ion-row><b>Code postal :</b> {{journey.startPlace.postalCode ? journey.startPlace.postalCode : "Non
+                renseigné"}}
+              </ion-row>
+              <ion-row><b>Département :</b> {{journey.startPlace.county ? journey.startPlace.county : "Non renseigné"}}
+              </ion-row>
+              <ion-row><b>Région :</b> {{journey.startPlace.region ? journey.startPlace.region : "Non renseignée"}}
+              </ion-row>
+              <ion-row><b>Pays :</b> {{journey.startPlace.country ? journey.startPlace.country : "Non renseigné"}}
+              </ion-row>
+            </ion-grid>
+          </div>
+        </ion-grid>
+      </ion-item>
 
+      <ion-item (click)="toogleEndPlace()">
+        <ion-grid>
+          <ion-row class="place" [ngClass]="{'active': isEndPlaceDetailShown}">
+            <ion-col col-10>
+              A : {{journey.endPlace.city}}
+            </ion-col>
+            <ion-col col-2 text-right>
+              <ion-icon name="ios-arrow-down" *ngIf="!isEndPlaceDetailShown"></ion-icon>
+              <ion-icon name="ios-arrow-up" *ngIf="isEndPlaceDetailShown"></ion-icon>
+            </ion-col>
+          </ion-row>
+          <div *ngIf="isEndPlaceDetailShown">
+            <ion-grid>
+              <ion-row><b>N° de rue :</b> {{journey.endPlace.streetNumber ? journey.endPlace.streetNumber : "Non
+                renseigné"}}
+              </ion-row>
+              <ion-row><b>Rue :</b> {{journey.endPlace.street ? journey.endPlace.street : "Non renseignée"}}</ion-row>
+              <ion-row><b>Ville :</b> {{journey.endPlace.city ? journey.endPlace.city : "Non renseignée"}}</ion-row>
+              <ion-row><b>Code postal :</b> {{journey.endPlace.postalCode ? journey.endPlace.postalCode : "Non
+                renseigné"}}
+              </ion-row>
+              <ion-row><b>Département :</b> {{journey.endPlace.county ? journey.endPlace.county : "Non renseigné"}}
+              </ion-row>
+              <ion-row><b>Région :</b> {{journey.endPlace.region ? journey.endPlace.region : "Non renseignée"}}
+              </ion-row>
+              <ion-row><b>Pays :</b> {{journey.endPlace.country ? journey.endPlace.country : "Non renseigné"}}</ion-row>
+            </ion-grid>
+          </div>
+        </ion-grid>
+      </ion-item>
+      <ion-item>
+        <ion-label class="fontSize15 fontBold"> {{journey.remainingPlacesCar}} places libres</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label class="fontSize15 fontBold">Prix d'une place : {{journey.price}} €</ion-label>
+      </ion-item>
+    </ion-row>
+  </ion-card>
+
+  <ion-card>
+    <ion-title class="mrg20T fontBold">Conducteur</ion-title>
+    <ion-item>
+      <ion-avatar item-start>
+        <img src="{{journey.driver.photoUrl}}">
+      </ion-avatar>
+      <ion-grid>
+        <ion-row>
+          <ion-col col-11>
+            <ion-row>
+              <h2>{{journey.driver.username}}</h2>
+            </ion-row>
+            <ion-row>
+              <p> {{journey.driver.age}} ans</p>
+            </ion-row>
+          </ion-col>
+          <ion-col col-1>
+            <ion-icon name="ios-arrow-forward"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
+
+    </ion-item>
+  </ion-card>
 </ion-content>

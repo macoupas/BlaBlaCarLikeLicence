@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {Journey} from "../../models/journey.model";
 import * as moment from "moment";
+import {JourneyDetailPage} from "../journey-detail/journey-detail";
 
 /**
  * Generated class for the JourneysPage page.
@@ -41,6 +42,10 @@ export class JourneysPage {
   }
 
   ionViewDidLoad() {
+  }
+
+  goToDetailJourney(journey) {
+    this.navCtrl.push(JourneyDetailPage, {journey: journey});
   }
 
 }

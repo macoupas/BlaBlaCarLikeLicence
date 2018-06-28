@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import * as moment from "moment";
+
 
 /**
  * Generated class for the JourneyDetailPage page.
@@ -15,11 +17,26 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class JourneyDetailPage {
 
+  journey;
+
+  date : string;
+
+  isStartPlaceDetailShown: Boolean = false;
+  isEndPlaceDetailShown: Boolean = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.journey = this.navParams.data.journey;
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad JourneyDetailPage');
+  }
+
+  toogleStartPlace() {
+    this.isStartPlaceDetailShown = !this.isStartPlaceDetailShown;
+  }
+
+  toogleEndPlace() {
+    this.isEndPlaceDetailShown = !this.isEndPlaceDetailShown;
   }
 
 }

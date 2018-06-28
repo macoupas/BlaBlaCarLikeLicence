@@ -28,6 +28,7 @@ import {VoituresPage} from '../pages/voitures/voitures';
 import {CommentairesPage} from '../pages/commentaires/commentaires';
 import {HistoriquePage} from '../pages/historique/historique';
 import {JourneysPage} from "../pages/journeys/journeys";
+import {JourneyDetailPage} from "../pages/journey-detail/journey-detail";
 
 export const firestoreConfig = {
   apiKey: "AIzaSyAkfcjbz2_uhX3dPY_k6lXysc25PY-z8YE",
@@ -56,7 +57,8 @@ export const placeConfig = {
     VoituresPage,
     CommentairesPage,
     HistoriquePage,
-    JourneysPage
+    JourneysPage,
+    JourneyDetailPage
   ],
   imports: [
     BrowserModule,
@@ -89,7 +91,8 @@ export const placeConfig = {
     VoituresPage,
     CommentairesPage,
     HistoriquePage,
-    JourneysPage
+    JourneysPage,
+    JourneyDetailPage
   ],
   providers: [
     StatusBar,

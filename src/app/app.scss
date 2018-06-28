@@ -14,3 +14,24 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+
+.mrg20T {
+  margin-top: 20px;
+}
+
+.fontBold {
+  font-weight: bold !important;
+}
+
+.fontSize15 {
+  font-size: 15px !important;
+}
+
+.fontWhite {
+  color: white;
+}
+
+.text-center {
+  text-align: center !important;
+}

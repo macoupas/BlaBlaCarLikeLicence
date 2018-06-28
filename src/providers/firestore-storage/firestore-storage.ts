@@ -71,7 +71,7 @@ export class FirestoreStorageProvider {
     return this.db.collection(JOURNEY_PATH).doc(journey.uid).set(journey);
   }
 
-  getDocuments(collectionName: string, filters: Array<Filter>): Promise<any> {
+  getDocuments(collectionName: string, filters: Array<Filter>): Promise<Array<any>> {
     return new Promise((resolve, reject) => {
       let query = this.db.collection(collectionName);
       filters.forEach(filter => query = query.where(filter.field, filter.operator, filter.value));
