@@ -100,11 +100,23 @@ export class FirestoreStorageProvider {
   }
 
   addSecondDocument(collection: string, docId: string, secondCollection: string, secondId: string, dataObject: any) {
-    console.debug('collection', collection);
-    console.debug('docId', docId);
-    console.debug('secondCollection', secondCollection);
-    console.debug('secondId', secondId);
-    console.debug('dataObject', dataObject);
     return this.db.collection(collection).doc(docId).collection(secondCollection).doc(secondId).set(dataObject);
+  }
+
+  getSecondDocuments(collection: string, firstId: string, secondCollection: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.db.collection(collection).doc(firstId).collection(secondCollection).get().then((snapshot) => {
+        let results = [];
+        snapshot.forEach(doc => {
+          results.push(doc.data());
+        });
+        if (results.length > 0) {
+          resolve(results);
+        } else {
+          console.error("No document");
+          resolve(null);
+        }
+      });
+    });
   }
 }

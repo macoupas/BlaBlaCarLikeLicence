@@ -4,14 +4,10 @@ import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 
 import {HomePage} from '../pages/home/home';
-import {ListPage} from '../pages/list/list';
 import {ProfilePage} from "../pages/profile/profile";
 import {LoginPage} from '../pages/login/login';
 import {AuthProvider} from "../providers/auth/auth";
 import {ProfilPage} from '../pages/profil/profil';
-import {VoituresPage} from '../pages/voitures/voitures';
-import {CommentairesPage} from '../pages/commentaires/commentaires';
-import {HistoriquePage} from '../pages/historique/historique';
 import {MyJourneysPage} from "../pages/my-journeys/my-journeys";
 
 @Component({
@@ -30,7 +26,6 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       {title: 'Home', component: HomePage},
-      {title: 'List', component: ListPage},
       {title: 'Mon profil', component: ProfilePage},
       {title: 'Mes trajets', component: MyJourneysPage},
       {title: 'Mon profil publique', component: ProfilPage}

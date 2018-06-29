@@ -71,8 +71,7 @@ export class AuthProvider {
           phone: credential.user.phoneNumber ? credential.user.phoneNumber : "",
           age: null,
           cars: [],
-          comments: [],
-          journeys: []
+          comments: []
         };
          resolve(newUser);
       }).catch(error => {

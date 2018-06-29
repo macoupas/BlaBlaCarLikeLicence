@@ -26,6 +26,8 @@ export class JourneyDetailPage {
   journey;
   passengers: Array<User> = [];
 
+  bookPossible = true;
+
   date : string;
 
   isStartPlaceDetailShown: Boolean = false;
@@ -34,6 +36,12 @@ export class JourneyDetailPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private fs: FirestoreStorageProvider,
               private auth: AuthProvider) {
     this.journey = this.navParams.data.journey;
+
+    if(!this.navParams.data.bookPossible) {
+      this.bookPossible = this.navParams.data.bookPossible;
+    } else if(this.journey.driver.uid == this.auth.userConnected.uid) {
+      this.bookPossible = false;
+    }
 
     if(this.journey.passengers) {
       this.journey.passengers.forEach((passenger) => {
