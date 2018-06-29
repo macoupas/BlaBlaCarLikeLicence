@@ -29,6 +29,7 @@ import {CommentairesPage} from '../pages/commentaires/commentaires';
 import {HistoriquePage} from '../pages/historique/historique';
 import {JourneysPage} from "../pages/journeys/journeys";
 import {JourneyDetailPage} from "../pages/journey-detail/journey-detail";
+import {MyJourneysPage} from "../pages/my-journeys/my-journeys";
 
 export const firestoreConfig = {
   apiKey: "AIzaSyAkfcjbz2_uhX3dPY_k6lXysc25PY-z8YE",
@@ -58,7 +59,8 @@ export const placeConfig = {
     CommentairesPage,
     HistoriquePage,
     JourneysPage,
-    JourneyDetailPage
+    JourneyDetailPage,
+    MyJourneysPage
   ],
   imports: [
     BrowserModule,
@@ -92,7 +94,8 @@ export const placeConfig = {
     CommentairesPage,
     HistoriquePage,
     JourneysPage,
-    JourneyDetailPage
+    JourneyDetailPage,
+    MyJourneysPage
   ],
   providers: [
     StatusBar,

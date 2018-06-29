@@ -25,30 +25,29 @@ private user: User = {
     phone: "",
     age: 0,
     cars: [],
-    comments: [],
-    journeys: []
+    comments: []
   };
-  
+
   items: Array<{model: string, mark: string, color: string}>;
-  
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private auth:AuthProvider) {
     this.navCtrl = navCtrl;
     this.user = this.auth.userConnected;
     this.items = [];
-    for (let i = 1; i < this.user.cars.count; i++) {
+    for (let i = 1; i < this.user.cars.length; i++) {
         this.items.push({
         model: this.user.cars[i].model,
         mark:  this.user.cars[i].mark,
         color: this.user.cars[i].color
       });
     }
-    
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad VoituresPage');
   }
-  
-  
+
+
 
 }

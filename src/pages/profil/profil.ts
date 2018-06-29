@@ -30,27 +30,25 @@ export class ProfilPage {
     phone: "",
     age: 0,
     cars: [],
-    comments: [],
-    journeys: []
+    comments: []
   };
-  
+
   constructor(public navCtrl: NavController, public navParams: NavParams , private auth:AuthProvider) {
-    this.navCtrl = navCtrl;
-    this.user = this.auth.userConnected;
+    this.user = this.navParams.data.user;
 }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProfilPage');
   }
-    
+
     goToVoitures(){
      this.navCtrl.push(VoituresPage);
     }
-    
+
     goToCommentaires(){
     this.navCtrl.push(CommentairesPage);
     }
-    
+
     goToHistorique(){
     this.navCtrl.push(HistoriquePage);
     }

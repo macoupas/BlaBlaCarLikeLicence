@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AngularFirestore} from "angularfire2/firestore";
 import {USER_PATH, User} from "../../models/user.model";
 import {Journey, JOURNEY_PATH} from "../../models/journey.model";
@@ -40,7 +40,7 @@ export class FirestoreStorageProvider {
     });
   }
 
-  getDocumentReference(collectionName: string, idDoc: string) : DocumentReference{
+  getDocumentReference(collectionName: string, idDoc: string): DocumentReference {
     return this.db.collection(collectionName).doc(idDoc);
   }
 
@@ -71,6 +71,13 @@ export class FirestoreStorageProvider {
     return this.db.collection(JOURNEY_PATH).doc(journey.uid).set(journey);
   }
 
+  addPassengerJourney(journeyId, passengers: Array<DocumentReference>, remainingPlaces) {
+    return this.db.collection(JOURNEY_PATH).doc(journeyId).update({
+      remainingPlacesCar: remainingPlaces,
+      passengers: passengers
+    })
+  }
+
   getDocuments(collectionName: string, filters: Array<Filter>): Promise<Array<any>> {
     return new Promise((resolve, reject) => {
       let query = this.db.collection(collectionName);
@@ -90,5 +97,14 @@ export class FirestoreStorageProvider {
         })
         .catch((error: any) => reject(error));
     });
+  }
+
+  addSecondDocument(collection: string, docId: string, secondCollection: string, secondId: string, dataObject: any) {
+    console.debug('collection', collection);
+    console.debug('docId', docId);
+    console.debug('secondCollection', secondCollection);
+    console.debug('secondId', secondId);
+    console.debug('dataObject', dataObject);
+    return this.db.collection(collection).doc(docId).collection(secondCollection).doc(secondId).set(dataObject);
   }
 }

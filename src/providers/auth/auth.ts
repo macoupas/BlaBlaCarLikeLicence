@@ -95,8 +95,7 @@ export class AuthProvider {
             phone: user.phoneNumber ? user.phoneNumber : "",
             age: null,
             cars: [],
-            comments: [],
-            journeys: []
+            comments: []
           };
           this.authenticated = true;
           this.newUser = true;
@@ -114,8 +113,7 @@ export class AuthProvider {
             phone: userConnected.phone,
             age: userConnected.age,
             cars: userConnected.cars,
-            comments: userConnected.comments,
-            journeys: userConnected.journeys
+            comments: userConnected.comments
           };
           this.authenticated = true;
           this.newUser = false;

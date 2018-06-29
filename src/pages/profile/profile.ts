@@ -28,8 +28,7 @@ export class ProfilePage {
     phone: "",
     age: 0,
     cars: [],
-    comments: [],
-    journeys: []
+    comments: []
   };
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private auth:AuthProvider,
@@ -43,7 +42,12 @@ export class ProfilePage {
   }
 
   setParamsCompte() {
-
+    this.fs.addUser(this.user).then(() => {
+      this.auth.userConnected = this.user;
+      console.debug('Profile modified with success');
+    }).catch((error) => {
+      console.error('Modification failed : ', error);
+    });
   }
 
   creerCompte() {

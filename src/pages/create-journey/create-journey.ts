@@ -1,16 +1,16 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {IonicPage} from 'ionic-angular';
+import {IonicPage, NavController} from 'ionic-angular';
 import {PlaceProvider} from "../../providers/place/place";
 import {GoogleMapsProvider} from "../../providers/google-maps/google-maps";
-import {Journey} from "../../models/journey.model";
+import {Journey, JOURNEY_PATH} from "../../models/journey.model";
 import {FirestoreStorageProvider} from "../../providers/firestore-storage/firestore-storage";
 import * as firebase from "firebase";
 import * as moment from "moment";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import Timestamp = firebase.firestore.Timestamp;
 import {AuthProvider} from "../../providers/auth/auth";
-import DocumentReference = firebase.firestore.DocumentReference;
-import {USER_PATH} from "../../models/user.model";
+import {USER_JOURNEY_PATH, USER_PATH} from "../../models/user.model";
+import {HomePage} from "../home/home";
 
 /**
  * Generated class for the CreateJourneyPage page.
@@ -51,11 +51,12 @@ export class CreateJourneyPage {
     driver: this.fs.getDocumentReference(USER_PATH, this.auth.userConnected.uid),
     placesCar: 0,
     remainingPlacesCar: 0,
-    price: 0
+    price: 0,
+    passengers: []
   };
 
   constructor(public maps: GoogleMapsProvider, public places: PlaceProvider, private fb: FormBuilder,
-              public fs: FirestoreStorageProvider, private auth: AuthProvider) {
+              public fs: FirestoreStorageProvider, private auth: AuthProvider, private navCtrl: NavController) {
     this.searchDisabled = true;
     for (let i = 1; i <= NB_PLACES_MAX; i++) {
       this.placesSelect.push(i);
@@ -97,7 +98,11 @@ export class CreateJourneyPage {
       this.journey.price = this.journeyForm.value.price;
       console.debug('journey', this.journey);
       this.fs.addJourney(this.journey).then(journey => {
-        console.debug('Add journey success');
+
+        this.fs.addSecondDocument(USER_PATH, this.auth.userConnected.uid, 'journeys', this.journey.uid, {ref: this.fs.getDocumentReference(JOURNEY_PATH, this.journey.uid)}).then(() => {
+          console.debug('Add journey success');
+          this.navCtrl.setRoot(HomePage);
+        });
       }).catch(error => {
         console.error(error);
       })

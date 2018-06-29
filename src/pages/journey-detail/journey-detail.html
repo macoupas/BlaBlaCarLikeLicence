@@ -42,14 +42,12 @@
           </ion-row>
           <div *ngIf="isStartPlaceDetailShown">
             <ion-grid>
-              <ion-row><b>N° de rue :</b> {{journey.startPlace.streetNumber ? journey.startPlace.streetNumber : "Non
-                renseigné"}}
+              <ion-row><b>N° de rue :</b> {{journey.startPlace.streetNumber ? journey.startPlace.streetNumber : "Non renseigné"}}
               </ion-row>
               <ion-row><b>Rue :</b> {{journey.startPlace.street ? journey.startPlace.street : "Non renseignée"}}
               </ion-row>
               <ion-row><b>Ville :</b> {{journey.startPlace.city ? journey.startPlace.city : "Non renseignée"}}</ion-row>
-              <ion-row><b>Code postal :</b> {{journey.startPlace.postalCode ? journey.startPlace.postalCode : "Non
-                renseigné"}}
+              <ion-row><b>Code postal :</b> {{journey.startPlace.postalCode ? journey.startPlace.postalCode : "Non renseigné"}}
               </ion-row>
               <ion-row><b>Département :</b> {{journey.startPlace.county ? journey.startPlace.county : "Non renseigné"}}
               </ion-row>
@@ -75,13 +73,11 @@
           </ion-row>
           <div *ngIf="isEndPlaceDetailShown">
             <ion-grid>
-              <ion-row><b>N° de rue :</b> {{journey.endPlace.streetNumber ? journey.endPlace.streetNumber : "Non
-                renseigné"}}
+              <ion-row><b>N° de rue :</b> {{journey.endPlace.streetNumber ? journey.endPlace.streetNumber : "Non renseigné"}}
               </ion-row>
               <ion-row><b>Rue :</b> {{journey.endPlace.street ? journey.endPlace.street : "Non renseignée"}}</ion-row>
               <ion-row><b>Ville :</b> {{journey.endPlace.city ? journey.endPlace.city : "Non renseignée"}}</ion-row>
-              <ion-row><b>Code postal :</b> {{journey.endPlace.postalCode ? journey.endPlace.postalCode : "Non
-                renseigné"}}
+              <ion-row><b>Code postal :</b> {{journey.endPlace.postalCode ? journey.endPlace.postalCode : "Non renseigné"}}
               </ion-row>
               <ion-row><b>Département :</b> {{journey.endPlace.county ? journey.endPlace.county : "Non renseigné"}}
               </ion-row>
@@ -98,12 +94,13 @@
       <ion-item>
         <ion-label class="fontSize15 fontBold">Prix d'une place : {{journey.price}} €</ion-label>
       </ion-item>
+      <button ion-button round col-10 margin (click)="book()"> Réserver </button>
     </ion-row>
   </ion-card>
 
   <ion-card>
     <ion-title class="mrg20T fontBold">Conducteur</ion-title>
-    <ion-item>
+    <ion-item (click)="goToDriverDetail()">
       <ion-avatar item-start>
         <img src="{{journey.driver.photoUrl}}">
       </ion-avatar>
@@ -111,7 +108,7 @@
         <ion-row>
           <ion-col col-11>
             <ion-row>
-              <h2>{{journey.driver.username}}</h2>
+              <h2>{{journey.driver.firstName}} {{journey.driver.name}}</h2>
             </ion-row>
             <ion-row>
               <p> {{journey.driver.age}} ans</p>
@@ -122,9 +119,30 @@
           </ion-col>
         </ion-row>
       </ion-grid>
+    </ion-item>
+  </ion-card>
 
-
-
+  <ion-card>
+    <ion-title class="mrg20T fontBold">Passagers</ion-title>
+    <ion-item *ngFor="let passenger of passengers" (click)="goToPassengerDetail(passenger)">
+      <ion-avatar item-start>
+        <img src="{{passenger.photoUrl}}">
+      </ion-avatar>
+      <ion-grid>
+        <ion-row>
+          <ion-col col-11>
+            <ion-row>
+              <h2>{{passenger.firstName}} {{passenger.name}}</h2>
+            </ion-row>
+            <ion-row>
+              <p> {{passenger.age}} ans</p>
+            </ion-row>
+          </ion-col>
+          <ion-col col-1>
+            <ion-icon name="ios-arrow-forward"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-item>
   </ion-card>
 </ion-content>

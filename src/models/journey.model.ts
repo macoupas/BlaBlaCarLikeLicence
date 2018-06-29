@@ -11,7 +11,8 @@ export interface Journey {
   driver: DocumentReference,
   placesCar: number,
   remainingPlacesCar: number,
-  price: number
+  price: number,
+  passengers: Array<DocumentReference>
 }
 
 export const JOURNEY_PATH = 'journeys';

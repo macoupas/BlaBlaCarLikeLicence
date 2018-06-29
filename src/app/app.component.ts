@@ -12,6 +12,7 @@ import {ProfilPage} from '../pages/profil/profil';
 import {VoituresPage} from '../pages/voitures/voitures';
 import {CommentairesPage} from '../pages/commentaires/commentaires';
 import {HistoriquePage} from '../pages/historique/historique';
+import {MyJourneysPage} from "../pages/my-journeys/my-journeys";
 
 @Component({
   templateUrl: 'app.html'
@@ -30,7 +31,8 @@ export class MyApp {
     this.pages = [
       {title: 'Home', component: HomePage},
       {title: 'List', component: ListPage},
-      {title: 'Mon profile', component: ProfilePage},
+      {title: 'Mon profil', component: ProfilePage},
+      {title: 'Mes trajets', component: MyJourneysPage},
       {title: 'Mon profil publique', component: ProfilPage}
     ];
 
@@ -48,7 +50,12 @@ export class MyApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+    if(page.title == 'Mon profil publique'){
+      this.nav.setRoot(page.component, {user: this.auth.userConnected})
+    } else {
+      this.nav.setRoot(page.component);
+    }
+
   }
 
   logOut() {
