@@ -107,6 +107,7 @@ export class FirestoreStorageProvider {
     return new Promise((resolve, reject) => {
       this.db.collection(collection).doc(firstId).collection(secondCollection).get().then((snapshot) => {
         let results = [];
+
         snapshot.forEach(doc => {
           results.push(doc.data());
         });
@@ -117,6 +118,22 @@ export class FirestoreStorageProvider {
           resolve(null);
         }
       });
+    });
+  }
+
+  deleteDocument(collectionName: string, docID: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.db.collection(collectionName).doc(docID).delete()
+        .then((obj: any) => resolve(obj))
+        .catch((error: any) => reject(error));
+    });
+  }
+
+  deleteSecondDocument(collection: string, docID: string, secondCollection: string, secondDocId: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.db.collection(collection).doc(docID).collection(secondCollection).doc(secondDocId).delete()
+        .then((obj: any) => resolve(obj))
+        .catch((error: any) => reject(error));
     });
   }
 }

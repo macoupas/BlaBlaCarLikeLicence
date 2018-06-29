@@ -95,6 +95,8 @@
         <ion-label class="fontSize15 fontBold">Prix d'une place : {{journey.price}} €</ion-label>
       </ion-item>
       <button *ngIf="bookPossible" ion-button round col-10 margin (click)="book()"> Réserver </button>
+      <button *ngIf="unbookPossible" ion-button round col-10 margin (click)="unbook()"> Annuler la réservation </button>
+      <button *ngIf="deletePossible" ion-button color="danger" round col-10 margin (click)="deleteJourney()"> Supprimer </button>
     </ion-row>
   </ion-card>
 

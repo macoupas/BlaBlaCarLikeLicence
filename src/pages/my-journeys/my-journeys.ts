@@ -32,6 +32,7 @@ export class MyJourneysPage {
         journeys.forEach(journey => {
           journey.ref.get().then(journeySnapshot => {
             let journey = journeySnapshot.data();
+            console.debug('journey', journey);
             journey.driver.get().then(user => {
               let startDate = moment.unix(journey.startDate.seconds).format("DD MMM YYYY à HH:mm");
               journey.driver = user.data();
