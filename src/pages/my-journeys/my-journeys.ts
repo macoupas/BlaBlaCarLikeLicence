@@ -28,17 +28,21 @@ export class MyJourneysPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private fs: FirestoreStorageProvider,
               private auth: AuthProvider) {
     this.fs.getSecondDocuments(USER_PATH, this.auth.userConnected.uid, USER_JOURNEY_PATH).then((journeys) => {
+      console.debug('journeys', journeys);
       if(journeys) {
         journeys.forEach(journey => {
           journey.ref.get().then(journeySnapshot => {
             let journey = journeySnapshot.data();
             console.debug('journey', journey);
-            journey.driver.get().then(user => {
-              let startDate = moment.unix(journey.startDate.seconds).format("DD MMM YYYY à HH:mm");
-              journey.driver = user.data();
-              journey.startDate = startDate;
-              this.myJourneys.push(journey);
-            });
+            if(journey) {
+              journey.driver.get().then(user => {
+                let startDate = moment.unix(journey.startDate.seconds).format("DD MMM YYYY à HH:mm");
+                journey.driver = user.data();
+                journey.startDate = startDate;
+                this.myJourneys.push(journey);
+              });
+            }
+
           });
         });
       }

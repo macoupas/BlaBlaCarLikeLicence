@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AngularFirestore} from "angularfire2/firestore";
 import {USER_PATH, User} from "../../models/user.model";
-import {Journey, JOURNEY_PATH} from "../../models/journey.model";
+import {Journey, JOURNEY_PATH, PASSENGER_PATH} from "../../models/journey.model";
 import {Filter} from "../../models/filter.model";
 import * as firebase from "firebase";
 import DocumentReference = firebase.firestore.DocumentReference;
@@ -71,11 +71,31 @@ export class FirestoreStorageProvider {
     return this.db.collection(JOURNEY_PATH).doc(journey.uid).set(journey);
   }
 
-  addPassengerJourney(journeyId, passengers: Array<DocumentReference>, remainingPlaces) {
-    return this.db.collection(JOURNEY_PATH).doc(journeyId).update({
-      remainingPlacesCar: remainingPlaces,
-      passengers: passengers
-    })
+  addPassengerJourney(journeyId, remainingPlaces, user) : Promise<Journey> {
+    return new Promise(((resolve, reject) => {
+      this.db.collection(JOURNEY_PATH).doc(journeyId).update({
+        remainingPlacesCar: remainingPlaces,
+      });
+      this.addSecondDocument(JOURNEY_PATH, journeyId, PASSENGER_PATH, user.uid,
+        {ref: this.getDocumentReference(USER_PATH, user.uid)}).then(result => {
+          resolve(result);
+      }).catch(error => {
+        reject(error);
+      })
+    }));
+  }
+
+  deletePassengerJourney(journeyId, remainingPlaces, user) : Promise<Journey> {
+    return new Promise(((resolve, reject) => {
+      this.db.collection(JOURNEY_PATH).doc(journeyId).update({
+        remainingPlacesCar: remainingPlaces,
+      });
+      this.deleteSecondDocument(JOURNEY_PATH, journeyId, PASSENGER_PATH, user.uid).then(result => {
+        resolve(result);
+      }).catch(error => {
+        reject(error);
+      })
+    }));
   }
 
   getDocuments(collectionName: string, filters: Array<Filter>): Promise<Array<any>> {
@@ -99,7 +119,7 @@ export class FirestoreStorageProvider {
     });
   }
 
-  addSecondDocument(collection: string, docId: string, secondCollection: string, secondId: string, dataObject: any) {
+  addSecondDocument(collection: string, docId: string, secondCollection: string, secondId: string, dataObject: any) : Promise<any> {
     return this.db.collection(collection).doc(docId).collection(secondCollection).doc(secondId).set(dataObject);
   }
 
@@ -118,6 +138,28 @@ export class FirestoreStorageProvider {
           resolve(null);
         }
       });
+    });
+  }
+
+  getSecondDocumentsWithQuery(collection: string, firstId: string, secondCollection: string, filters: Array<Filter>): Promise<any> {
+    return new Promise((resolve, reject) => {
+        let query = this.db.collection(collection).doc(firstId).collection(secondCollection);
+        filters.forEach(filter => query = query.where(filter.field, filter.operator, filter.value));
+        query.get()
+          .then((querySnapshot) => {
+            let results = [];
+            querySnapshot.forEach(function (doc) {
+              results.push(doc.data());
+            });
+            if (results.length > 0) {
+              console.debug(results);
+              resolve(results);
+            } else {
+              console.error("No document");
+              resolve(null);
+            }
+          })
+          .catch((error: any) => reject(error));
     });
   }
 

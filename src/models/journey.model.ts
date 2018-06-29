@@ -16,3 +16,4 @@ export interface Journey {
 }
 
 export const JOURNEY_PATH = 'journeys';
+export const PASSENGER_PATH = 'passengers';

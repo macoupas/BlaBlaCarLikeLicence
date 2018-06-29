@@ -82,10 +82,11 @@ export class SearchJourneyPage {
       queryFilters.push({field: "endPlace.city", operator: "==", value: this.endJourneyPlace.city});
       if(!this.startDate) {
         this.startDate = this.minDate;
-        if(!this.startTime) {
-          this.startTime = '00:00';
-        }
       }
+      if(!this.startTime) {
+        this.startTime = '00:00';
+      }
+      console.debug(this.startDate + this.startTime);
       let date = moment(this.startDate + " " + this.startTime).format();
       let timestamp = Timestamp.fromMillis(parseInt(moment(date).format('x')));
       queryFilters.push({field: "startDate", operator: ">=", value: timestamp});

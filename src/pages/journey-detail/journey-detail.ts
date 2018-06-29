@@ -5,7 +5,7 @@ import {FirestoreStorageProvider} from "../../providers/firestore-storage/firest
 import {User, USER_JOURNEY_PATH, USER_PASSENGER_PATH, USER_PATH} from "../../models/user.model";
 import {AuthProvider} from "../../providers/auth/auth";
 import * as firebase from "firebase";
-import {JOURNEY_PATH} from "../../models/journey.model";
+import {JOURNEY_PATH, PASSENGER_PATH} from "../../models/journey.model";
 import {MyJourneysPage} from "../my-journeys/my-journeys";
 
 
@@ -39,6 +39,21 @@ export class JourneyDetailPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private fs: FirestoreStorageProvider,
               private auth: AuthProvider) {
     this.journey = this.navParams.data.journey;
+
+    this.fs.getSecondDocumentsWithQuery(JOURNEY_PATH, this.journey.uid, PASSENGER_PATH, [{
+      field: 'ref',
+      operator: '==',
+      value: this.fs.getDocumentReference(USER_PATH, this.auth.userConnected.uid)
+    }]).then(result => {
+      console.debug('result', result);
+      if(result) {
+        this.passengers.push(result);
+        if (result.uid == this.auth.userConnected.uid) {
+          this.unbookPossible = true;
+          this.bookPossible = false;
+        }
+      }
+    });
 
     if(this.journey.passengers) {
       this.journey.passengers.forEach((passenger) => {
@@ -95,10 +110,20 @@ export class JourneyDetailPage {
     }
     this.journey.passengers.push(this.fs.getDocumentReference(USER_PATH, this.auth.userConnected.uid));
     this.journey.remainingPlacesCar--;
-    this.fs.addPassengerJourney(this.journey.uid, this.journey.passengers, this.journey.remainingPlacesCar);
-    this.fs.addSecondDocument(USER_PATH, this.auth.userConnected.uid, USER_PASSENGER_PATH,
-      this.journey.uid, {ref: this.fs.getDocumentReference(JOURNEY_PATH, this.journey.uid)});
-    this.passengers.push(this.auth.userConnected);
+    this.fs.addPassengerJourney(this.journey.uid, this.journey.remainingPlacesCar, this.auth.userConnected). then(result => {
+      this.fs.addSecondDocument(USER_PATH, this.auth.userConnected.uid, USER_PASSENGER_PATH,
+        this.journey.uid, {ref: this.fs.getDocumentReference(JOURNEY_PATH, this.journey.uid)}).then(
+        (result) => {
+          this.passengers.push(this.auth.userConnected);
+          this.bookPossible = false;
+          this.unbookPossible = true;
+        }
+      ).catch((error) => {
+        console.error(error);
+      });
+    });
+
+
   }
 
   unbook() {
@@ -108,12 +133,13 @@ export class JourneyDetailPage {
       this.journey.passengers.slice(this.journey.passengers.indexOf(passengerRef), 1);
       this.journey.remainingPlacesCar++;
 
-      this.fs.addPassengerJourney(this.journey.uid, this.journey.passengers, this.journey.remainingPlacesCar);
-      this.fs.deleteSecondDocument(USER_PATH, this.auth.userConnected.uid, USER_PASSENGER_PATH,
-        this.journey.uid).then(result => {
+      this.fs.deletePassengerJourney(this.journey.uid, this.journey.remainingPlacesCar, this.auth.userConnected).then(result => {
+        this.fs.deleteSecondDocument(USER_PATH, this.auth.userConnected.uid, USER_PASSENGER_PATH,
+          this.journey.uid).then(result => {
           this.bookPossible = true;
           this.unbookPossible = false;
-      })
+        });
+      });
   }
 
   deleteJourney() {
@@ -133,7 +159,7 @@ export class JourneyDetailPage {
         console.log('Reference of journey deleted in user');
       }).catch(error => {
         console.error('Delete failed' + error);
-      })
+      });
       this.fs.deleteDocument(JOURNEY_PATH, this.journey.uid).then(result => {
         this.navCtrl.setRoot(MyJourneysPage);
       })
